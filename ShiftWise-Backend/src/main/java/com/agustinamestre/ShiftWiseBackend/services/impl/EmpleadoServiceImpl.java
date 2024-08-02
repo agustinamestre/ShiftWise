@@ -10,8 +10,10 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Service
 public class EmpleadoServiceImpl implements EmpleadoService {
     EmpleadoRepository empleadoRepository;
     ModelMapper modelMapper = new ModelMapper();
