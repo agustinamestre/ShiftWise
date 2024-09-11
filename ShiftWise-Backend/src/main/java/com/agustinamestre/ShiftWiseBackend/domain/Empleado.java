@@ -8,7 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDate;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Getter @Setter
+@Getter @Setter @Builder
 @Entity(name = "empleado")
 @AllArgsConstructor @NoArgsConstructor
 public class Empleado {
@@ -16,13 +16,13 @@ public class Empleado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     String nroDocumento;
     @Column(nullable = false)
     String nombre;
     @Column(nullable = false)
     String apellido;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     String email;
     @Column(nullable = false)
     LocalDate fechaNacimiento;
