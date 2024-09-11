@@ -1,6 +1,7 @@
 package com.agustinamestre.ShiftWiseBackend.controllers.requests;
 
 import com.agustinamestre.ShiftWiseBackend.shared.validators.adulto.Adulto;
+import com.agustinamestre.ShiftWiseBackend.shared.validators.documento.Documento;
 import com.agustinamestre.ShiftWiseBackend.shared.validators.email.Email;
 import com.agustinamestre.ShiftWiseBackend.shared.validators.fechaIngreso.FechaIngreso;
 import com.agustinamestre.ShiftWiseBackend.shared.validators.texto.TextoValido;
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 @Getter @Setter
 public class RequestEmpleado implements Serializable {
 
-    @NotBlank(message = "El numero de documento es requerido.")
+    @Documento
     String nroDocumento;
 
     @TextoValido(fieldName = "nombre")

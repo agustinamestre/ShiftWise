@@ -8,5 +8,6 @@ public class ShiftWiseErrors {
 
     public static final ApiError DOCUMENTO_EXISTENTE = new ApiError("DocumentoExistente","Ya existe un empleado con el documento ingresado.");
     public static final ApiError EMAIL_EXISTENTE = new ApiError("EmailExistente","Ya existe un empleado con el email ingresado.");
+    public static final ApiError EMPLEADO_NOT_FOUND = new ApiError("EmpleadoNoEncontrado","No se encontró el empleado indicado.");
 
 }
