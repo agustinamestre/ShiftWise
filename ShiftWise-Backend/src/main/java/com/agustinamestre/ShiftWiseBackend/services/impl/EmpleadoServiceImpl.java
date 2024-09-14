@@ -37,13 +37,13 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         try {
             empleadoRepository.save(empleado);
         } catch (DataIntegrityViolationException e) {
-            manejarDataIntegrityViolationException(e);
+            validarDuplicidadEmpleado(e);
         }
 
         return EmpleadoDTO.mapFromEmpleado(empleado);
     }
 
-    private void manejarDataIntegrityViolationException(DataIntegrityViolationException e) {
+    private void validarDuplicidadEmpleado(DataIntegrityViolationException e) {
         String rootCauseMessage = requireNonNull(e.getRootCause()).getLocalizedMessage();
 
         if (rootCauseMessage.contains("nro_documento")) {
@@ -52,7 +52,6 @@ public class EmpleadoServiceImpl implements EmpleadoService {
             throw new BusinessException(ShiftWiseErrors.EMAIL_EXISTENTE);
         }
     }
-
 
     @Override
     public List<EmpleadoDTO> obtenerEmpleados() {
@@ -74,19 +73,17 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         var empleado = empleadoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.EMPLEADO_NOT_FOUND));
 
-        Empleado.builder()
-                .nroDocumento(request.getNroDocumento())
-                .nombre(request.getNombre())
-                .apellido(request.getApellido())
-                .email(request.getEmail())
-                .fechaNacimiento(request.getFechaNacimiento())
-                .fechaIngreso(request.getFechaIngreso())
-                .build();
+        empleado.setNroDocumento(request.getNroDocumento());
+        empleado.setNombre(request.getNombre());
+        empleado.setApellido(request.getApellido());
+        empleado.setEmail(request.getEmail());
+        empleado.setFechaNacimiento(request.getFechaNacimiento());
+        empleado.setFechaIngreso(request.getFechaIngreso());
 
         try {
             empleadoRepository.save(empleado);
         } catch (DataIntegrityViolationException e) {
-            manejarDataIntegrityViolationException(e);
+            validarDuplicidadEmpleado(e);
         }
 
         return EmpleadoDTO.mapFromEmpleado(empleado);
