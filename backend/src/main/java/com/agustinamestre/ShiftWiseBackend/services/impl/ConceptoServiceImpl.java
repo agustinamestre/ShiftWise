@@ -21,13 +21,8 @@ public class ConceptoServiceImpl implements ConceptoService {
 
     @Override
     public List<ConceptoDTO> obtenerConceptos() {
-        var conceptos = conceptoRepository.findAll();
-        List<ConceptoDTO> conceptoReponse = new ArrayList<>();
-
-        for(Concepto concepto : conceptos){
-            conceptoReponse.add(ConceptoDTO.mapFromConcepto(concepto));
-        }
-
-        return conceptoReponse;
+        return conceptoRepository.findAll()
+                .stream().map(ConceptoDTO::mapFromConcepto)
+                .toList();
     }
 }
