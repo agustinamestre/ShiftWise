@@ -1,6 +1,6 @@
 package com.agustinamestre.ShiftWiseBackend.controllers;
 
-import com.agustinamestre.ShiftWiseBackend.controllers.requests.RequestEmpleado;
+import com.agustinamestre.ShiftWiseBackend.controllers.requests.EmpleadoRequest;
 import com.agustinamestre.ShiftWiseBackend.controllers.responses.EmpleadoDTO;
 import com.agustinamestre.ShiftWiseBackend.services.EmpleadoService;
 import jakarta.validation.Valid;
@@ -16,8 +16,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/shiftwise/empleado")
+@RequestMapping("/shiftwise/v1/empleados")
 public class EmpleadoController {
     EmpleadoService empleadoService;
 
@@ -27,8 +26,8 @@ public class EmpleadoController {
     }
 
     @PostMapping(path="")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<EmpleadoDTO> crearEmpleado(@RequestBody @Valid RequestEmpleado request){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<EmpleadoDTO> crearEmpleado(@RequestBody @Valid EmpleadoRequest request){
         return ResponseEntity.ok(empleadoService.crearEmpleado(request)) ;
     }
 
@@ -46,7 +45,7 @@ public class EmpleadoController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EmpleadoDTO editarEmpleado(@PathVariable String id, @Valid @RequestBody RequestEmpleado request){
+    public EmpleadoDTO editarEmpleado(@PathVariable String id, @Valid @RequestBody EmpleadoRequest request){
         return empleadoService.editarEmpleado(id, request);
     }
 

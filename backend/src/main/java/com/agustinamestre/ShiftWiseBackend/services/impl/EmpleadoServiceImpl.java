@@ -1,6 +1,6 @@
 package com.agustinamestre.ShiftWiseBackend.services.impl;
 
-import com.agustinamestre.ShiftWiseBackend.controllers.requests.RequestEmpleado;
+import com.agustinamestre.ShiftWiseBackend.controllers.requests.EmpleadoRequest;
 import com.agustinamestre.ShiftWiseBackend.controllers.responses.EmpleadoDTO;
 import com.agustinamestre.ShiftWiseBackend.domain.Empleado;
 import com.agustinamestre.ShiftWiseBackend.exceptions.BusinessException;
@@ -13,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,9 +31,9 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     }
 
     @Override
-    public EmpleadoDTO crearEmpleado(RequestEmpleado request) {
+    public EmpleadoDTO crearEmpleado(EmpleadoRequest request) {
 
-        var empleado = modelMapper.map(request, Empleado.class);
+        var empleado = Empleado.mapFromEmpleadoRequest(request);
 
         try {
             empleadoRepository.save(empleado);
@@ -69,7 +70,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     }
 
     @Override
-    public EmpleadoDTO editarEmpleado(String id, RequestEmpleado request) {
+    public EmpleadoDTO editarEmpleado(String id, EmpleadoRequest request) {
         var empleado = empleadoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.EMPLEADO_NOT_FOUND));
 
@@ -91,9 +92,10 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
     @Override
     public void eliminarEmpleado(String id) {
-        var empleado = empleadoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.EMPLEADO_NOT_FOUND));
-
-        empleadoRepository.delete(empleado);
+        try {
+            empleadoRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(ShiftWiseErrors.EMPLEADO_NOT_FOUND);
+        }
     }
 }

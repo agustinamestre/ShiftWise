@@ -16,7 +16,7 @@ import java.time.LocalDate;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter @Setter
-public class RequestEmpleado implements Serializable {
+public class EmpleadoRequest implements Serializable {
 
     @Documento
     String nroDocumento;
@@ -38,7 +38,7 @@ public class RequestEmpleado implements Serializable {
 
     LocalDate fechaCreacion = LocalDate.now();
 
-    String foto;
+    String fotoBase64;
 
     @NotBlank(message = "La contraseña es requerida.")
     String password;
