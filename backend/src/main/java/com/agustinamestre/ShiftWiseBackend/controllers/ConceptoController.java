@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/shiftwise/concepto")
+@RequestMapping("/shiftwise/v1/conceptos")
 public class ConceptoController {
 
     ConceptoService conceptoService;
