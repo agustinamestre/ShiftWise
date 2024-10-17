@@ -11,8 +11,16 @@ import jakarta.persistence.*;
 public class Concepto {
     @Id
     private Integer id;
+
     private String nombre;
+
     private Boolean laborable;
+
     private Integer hsMinimo;
+
     private Integer hsMaximo;
+
+    public ConceptoType obtenerConceptoType() {
+        return ConceptoType.obtenerConceptoId(id);
+    }
 }

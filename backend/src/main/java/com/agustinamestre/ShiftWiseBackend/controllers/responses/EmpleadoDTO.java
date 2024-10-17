@@ -29,7 +29,7 @@ public class EmpleadoDTO implements Serializable {
                 .email(empleado.getEmail())
                 .fechaNacimiento(empleado.getFechaNacimiento())
                 .fechaIngreso(empleado.getFechaIngreso())
-                .foto(empleado.getFoto())
+                .foto(empleado.getFotoBase64())
                 .build();
     }
 }
