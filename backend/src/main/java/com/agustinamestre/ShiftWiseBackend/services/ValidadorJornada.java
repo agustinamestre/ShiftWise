@@ -1,5 +1,7 @@
 package com.agustinamestre.ShiftWiseBackend.services;
 
+import com.agustinamestre.ShiftWiseBackend.domain.Jornada;
+
 public interface ValidadorJornada {
-    void validar(Integer horas);
+    void validar(Jornada jornada);
 }

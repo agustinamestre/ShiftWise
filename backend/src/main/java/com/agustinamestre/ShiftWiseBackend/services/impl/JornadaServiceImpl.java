@@ -16,7 +16,6 @@ import com.agustinamestre.ShiftWiseBackend.services.ValidadorJornadasFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -50,18 +49,16 @@ public class JornadaServiceImpl implements JornadaService {
         var concepto = conceptoRepository.findById(request.getIdConcepto())
                 .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.CONCEPTO_NOT_FOUND));
 
-        validadorJornadasFactory.obtenerValidador(concepto.obtenerConceptoType()).validar(request.getHorasTrabajadas());
-
         var jornada = Jornada.mapFromJornadaRequest(request);
 
         jornada.agregarConcepto(concepto);
         jornada.setEmpleado(empleado);
 
-        validarJornada(jornada, concepto);
+        validadorJornadasFactory.obtenerValidador(concepto.obtenerConceptoType()).validar(jornada);
+
+        validarConceptosEnJornada(jornada, concepto);
 
         validarHorasTrabajadasMismoDia(jornada, concepto);
-
-        validarHorasSemanales(jornada, concepto);
 
         jornadaRepository.save(jornada);
 
@@ -79,7 +76,7 @@ public class JornadaServiceImpl implements JornadaService {
                 .toList();
     }
 
-    private void validarJornada(Jornada jornada, Concepto concepto) {
+    private void validarConceptosEnJornada(Jornada jornada, Concepto concepto) {
         //jornadas de un empleado para el mismo dia
         var jornadas = jornadaRepository.jornadasEmpleadoMismoDia(jornada.getEmpleado().getNroDocumento(), jornada.getFecha());
 
@@ -120,70 +117,6 @@ public class JornadaServiceImpl implements JornadaService {
 
         if (horasTrabajadasTotal + horasTrabajadasAAgregar > 12) {
             throw new BusinessException(ShiftWiseErrors.NO_MAS_DE_12_HORAS_MISMO_DIA);
-        }
-    }
-
-    private void validarHorasSemanales(Jornada jornada, Concepto concepto){
-        LocalDate fecha = jornada.getFecha();
-        LocalDate lunes = fecha.with(DayOfWeek.MONDAY); //busco el lunes de esa semana
-        LocalDate domingo = fecha.with(DayOfWeek.SUNDAY); //busco el domingo de esa semana
-
-        if (concepto.obtenerConceptoType() == ConceptoType.LIBRE) {
-            return;
-        }
-
-        var jornadas = jornada.getEmpleado()
-                .getJornadas()
-                .stream()
-                .filter(j -> j.getFecha()
-                        .isEqual(lunes) || j.getFecha()
-                        .isEqual(domingo) || (j.getFecha()
-                        .isAfter(lunes) && j.getFecha()
-                        .isBefore(domingo)))
-                .toList();
-
-        int horasTrabajadasTotal = jornadas.stream()
-                .filter(j -> j.getHorasTrabajadas() != null)
-                .mapToInt(Jornada::getHorasTrabajadas)
-                .reduce(0, Integer::sum);
-
-        int horasTrabajadasAAgregar = jornada.getHorasTrabajadas();
-
-        if (horasTrabajadasTotal + horasTrabajadasAAgregar > 48) {
-            throw new BusinessException(ShiftWiseErrors.NO_MAS_DE_48_HORAS_POR_SEMANA);
-        }
-
-        //cuento la cantidad de turnos extra en la semana
-        long turnosExtra = jornadas.stream()
-                .map(Jornada::getConceptos)
-                .flatMap(List::stream)
-                .filter(c -> c.obtenerConceptoType() == ConceptoType.EXTRA)
-                .count();
-
-        if (turnosExtra == 3 && concepto.obtenerConceptoType() == ConceptoType.EXTRA) {
-            throw new BusinessException(ShiftWiseErrors.NO_MAS_DE_3_TURNOS_EXTRA_POR_SEMANA);
-        }
-
-        //cuento la cantidad de turnos normales en la semana
-        long turnosNormales = jornadas.stream()
-                .map(Jornada::getConceptos)
-                .flatMap(List::stream)
-                .filter(c -> c.obtenerConceptoType() == ConceptoType.NORMAL)
-                .count();
-
-        if (turnosNormales == 5 && concepto.obtenerConceptoType() == ConceptoType.NORMAL) {
-            throw new BusinessException(ShiftWiseErrors.NO_MAS_DE_5_TURNOS_NORMALES_POR_SEMANA);
-        }
-
-        //cuento la cantidad de dias libres en la semana
-        long diasLibres = jornadas.stream()
-                .map(Jornada::getConceptos)
-                .flatMap(List::stream)
-                .filter(c -> c.obtenerConceptoType() == ConceptoType.LIBRE)
-                .count();
-
-        if (diasLibres == 2 && concepto.obtenerConceptoType() == ConceptoType.LIBRE) {
-            throw new BusinessException(ShiftWiseErrors.NO_MAS_DE_2_TURNOS_LIBRE_POR_SEMANA);
         }
     }
 }

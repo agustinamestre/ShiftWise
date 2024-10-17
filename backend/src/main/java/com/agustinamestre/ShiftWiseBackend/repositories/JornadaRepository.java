@@ -15,6 +15,6 @@ public interface JornadaRepository extends JpaRepository<Jornada, String> {
     @Query("SELECT j FROM jornadas j WHERE j.empleado.nroDocumento = :nroDocumento AND j.fecha = :fecha")
     List<Jornada> jornadasEmpleadoMismoDia(@Param("nroDocumento") String nroDocumento, @Param("fecha") LocalDate fecha);
 
-    @Query("SELECT j FROM jornadas j WHERE (:nroDocumento is NULL or j.employee.nroDocumento = :nroDocumento) and " + "(:fecha is NULL or j.fecha = :fecha)")
+    @Query("SELECT j FROM jornadas j WHERE (:nroDocumento is NULL or j.empleado.nroDocumento = :nroDocumento) and " + "(:fecha is NULL or j.fecha = :fecha)")
     List<Jornada> obtenerJornadas(@Param("nroDocumento") String nroDocumento, @Param("fecha") LocalDate fecha);
 }
