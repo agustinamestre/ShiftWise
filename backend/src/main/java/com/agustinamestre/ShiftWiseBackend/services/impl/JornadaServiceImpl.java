@@ -12,7 +12,7 @@ import com.agustinamestre.ShiftWiseBackend.repositories.ConceptoRepository;
 import com.agustinamestre.ShiftWiseBackend.repositories.EmpleadoRepository;
 import com.agustinamestre.ShiftWiseBackend.repositories.JornadaRepository;
 import com.agustinamestre.ShiftWiseBackend.services.JornadaService;
-import com.agustinamestre.ShiftWiseBackend.services.ValidadorJornadasFactory;
+import com.agustinamestre.ShiftWiseBackend.services.validator.ValidadorJornadasFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

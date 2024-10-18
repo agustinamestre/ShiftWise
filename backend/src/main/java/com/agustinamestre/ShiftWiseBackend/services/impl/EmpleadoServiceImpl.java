@@ -23,8 +23,11 @@ import static java.util.Objects.requireNonNull;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class EmpleadoServiceImpl implements EmpleadoService {
+
     EmpleadoRepository empleadoRepository;
+
     ModelMapper modelMapper = new ModelMapper();
+
     @Autowired
     public EmpleadoServiceImpl(EmpleadoRepository empleadoRepository) {
         this.empleadoRepository = empleadoRepository;

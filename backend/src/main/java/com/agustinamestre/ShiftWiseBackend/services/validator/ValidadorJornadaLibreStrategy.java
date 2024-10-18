@@ -1,4 +1,4 @@
-package com.agustinamestre.ShiftWiseBackend.services;
+package com.agustinamestre.ShiftWiseBackend.services.validator;
 
 import com.agustinamestre.ShiftWiseBackend.domain.ConceptoType;
 import com.agustinamestre.ShiftWiseBackend.domain.Jornada;
@@ -6,6 +6,7 @@ import com.agustinamestre.ShiftWiseBackend.exceptions.BusinessException;
 import com.agustinamestre.ShiftWiseBackend.models.error.ShiftWiseErrors;
 
 import static java.util.Objects.isNull;
+
 import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;

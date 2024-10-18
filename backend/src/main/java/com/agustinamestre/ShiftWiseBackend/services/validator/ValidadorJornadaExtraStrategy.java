@@ -1,4 +1,4 @@
-package com.agustinamestre.ShiftWiseBackend.services;
+package com.agustinamestre.ShiftWiseBackend.services.validator;
 
 import com.agustinamestre.ShiftWiseBackend.domain.ConceptoType;
 import com.agustinamestre.ShiftWiseBackend.domain.Jornada;
@@ -6,6 +6,7 @@ import com.agustinamestre.ShiftWiseBackend.exceptions.BusinessException;
 import com.agustinamestre.ShiftWiseBackend.models.error.ShiftWiseErrors;
 
 import static java.util.Objects.isNull;
+
 import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Component
-public class ValidadorJornadaNormalStrategy implements ValidadorJornada{
+public class ValidadorJornadaExtraStrategy implements ValidadorJornada {
 
     @Override
     public void validar(Jornada jornada) {
@@ -21,8 +22,8 @@ public class ValidadorJornadaNormalStrategy implements ValidadorJornada{
             throw new BusinessException(ShiftWiseErrors.HS_TRABAJADAS_REQUERIDAS);
         }
 
-        if (jornada.getHorasTrabajadas() < 6 || jornada.getHorasTrabajadas() > 8) {
-            throw new BusinessException(ShiftWiseErrors.HORAS_NORMAL);
+        if (jornada.getHorasTrabajadas() < 2 || jornada.getHorasTrabajadas() > 6) {
+            throw new BusinessException(ShiftWiseErrors.HORAS_EXTRA);
         }
 
         LocalDate fecha = jornada.getFecha();
@@ -39,28 +40,15 @@ public class ValidadorJornadaNormalStrategy implements ValidadorJornada{
                         .isBefore(domingo)))
                 .toList();
 
-        int horasTrabajadasTotal = jornadas.stream()
-                .filter(j -> j.getHorasTrabajadas() != null)
-                .mapToInt(Jornada::getHorasTrabajadas)
-                .reduce(0, Integer::sum);
-
-        int horasTrabajadasAAgregar = jornada.getHorasTrabajadas();
-
-        if (horasTrabajadasTotal + horasTrabajadasAAgregar > 48) {
-            throw new BusinessException(ShiftWiseErrors.NO_MAS_DE_48_HORAS_POR_SEMANA);
-        }
-
-
-        //cuento la cantidad de turnos normales en la semana
-        long turnosNormales = jornadas.stream()
+        //cuento la cantidad de turnos extra en la semana
+        long turnosExtra = jornadas.stream()
                 .map(Jornada::getConceptos)
                 .flatMap(List::stream)
-                .filter(c -> c.obtenerConceptoType() == ConceptoType.NORMAL)
+                .filter(c -> c.obtenerConceptoType() == ConceptoType.EXTRA)
                 .count();
 
-        if (turnosNormales == 5) {
-            throw new BusinessException(ShiftWiseErrors.NO_MAS_DE_5_TURNOS_NORMALES_POR_SEMANA);
+        if (turnosExtra == 3) {
+            throw new BusinessException(ShiftWiseErrors.NO_MAS_DE_3_TURNOS_EXTRA_POR_SEMANA);
         }
-
     }
 }
