@@ -27,7 +27,7 @@ public class ValidadorJornadaLibreStrategy implements ValidadorJornada {
         LocalDate lunes = fecha.with(DayOfWeek.MONDAY); //busco el lunes de esa semana
         LocalDate domingo = fecha.with(DayOfWeek.SUNDAY); //busco el domingo de esa semana
 
-        var jornadas = jornada.getEmpleado()
+        var jornadas = jornada.getUser()
                 .getJornadas()
                 .stream()
                 .filter(j -> j.getFecha()

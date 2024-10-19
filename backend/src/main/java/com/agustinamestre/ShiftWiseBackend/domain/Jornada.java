@@ -1,6 +1,5 @@
 package com.agustinamestre.ShiftWiseBackend.domain;
 
-import com.agustinamestre.ShiftWiseBackend.controllers.requests.EmpleadoRequest;
 import com.agustinamestre.ShiftWiseBackend.controllers.requests.JornadaRequest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,8 +22,8 @@ public class Jornada {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "idEmpleado", referencedColumnName = "id")
-    Empleado empleado;
+    @JoinColumn(name = "idUser", referencedColumnName = "id")
+    User user;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(

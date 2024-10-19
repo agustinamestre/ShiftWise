@@ -41,9 +41,9 @@ public class SecurityConfig {
 //        Set permissions on endpoints
                 .authorizeHttpRequests(auth -> auth
 //            our public endpoints
-                        .requestMatchers(HttpMethod.POST, "/shiftwise/v1/empleados").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/shiftwise/v1/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/shiftwise/v1/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/shiftwise/v1/empleados").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/shiftwise/v1/users").permitAll()
 //            our private endpoints
                         .anyRequest().authenticated())
                 .authenticationManager(authenticationManager)

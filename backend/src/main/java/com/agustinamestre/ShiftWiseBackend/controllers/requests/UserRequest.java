@@ -16,7 +16,7 @@ import java.time.LocalDate;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter @Setter
-public class EmpleadoRequest implements Serializable {
+public class UserRequest implements Serializable {
 
     @Documento
     String nroDocumento;

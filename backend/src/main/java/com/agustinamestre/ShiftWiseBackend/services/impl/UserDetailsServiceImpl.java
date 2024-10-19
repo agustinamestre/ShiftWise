@@ -2,7 +2,7 @@ package com.agustinamestre.ShiftWiseBackend.services.impl;
 
 import com.agustinamestre.ShiftWiseBackend.exceptions.ResourceNotFoundException;
 import com.agustinamestre.ShiftWiseBackend.models.error.ShiftWiseErrors;
-import com.agustinamestre.ShiftWiseBackend.repositories.EmpleadoRepository;
+import com.agustinamestre.ShiftWiseBackend.repositories.UserRepository;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,21 +15,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final EmpleadoRepository empleadoRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserDetailsServiceImpl(EmpleadoRepository empleadoRepository) {
-        this.empleadoRepository = empleadoRepository;
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String nroDocumento) throws UsernameNotFoundException {
-        var empleado = empleadoRepository.findByNroDocumento(nroDocumento)
-                .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.EMPLEADO_NOT_FOUND));
+        var user = userRepository.findByNroDocumento(nroDocumento)
+                .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.USER_NOT_FOUND));
 
         return org.springframework.security.core.userdetails.User.builder()
-                .username(empleado.getNroDocumento())
-                .password(empleado.getPassword())
+                .username(user.getNroDocumento())
+                .password(user.getPassword())
                 .build();
         }
     }
