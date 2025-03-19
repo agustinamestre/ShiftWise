@@ -3,28 +3,37 @@ import com.agustinamestre.ShiftWiseBackend.exceptions.AccessDeniedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.security.Key;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 public class JwtHelper {
-    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final SecretKey SECRET_KEY = generateSecretKey();
     private static final int MINUTES = 60;
 
     public static String generateToken(String email) {
         var now = Instant.now();
         return Jwts.builder()
-                .subject(email)
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(now.plus(MINUTES, ChronoUnit.MINUTES)))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .setSubject(email)
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(now.plus(MINUTES, ChronoUnit.MINUTES)))
+                .signWith(SECRET_KEY)
                 .compact();
+    }
+
+    private static SecretKey generateSecretKey() {
+        try {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
+            return keyGenerator.generateKey();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error generating key", e);
+        }
     }
 
     public static String extractUsername(String token) {
@@ -38,13 +47,12 @@ public class JwtHelper {
 
     private static Claims getTokenBody(String token) {
         try {
-            return Jwts
-                    .parser()
+            return Jwts.parserBuilder()
                     .setSigningKey(SECRET_KEY)
                     .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-        } catch (SignatureException | ExpiredJwtException e) { // Invalid signature or expired token
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (SignatureException | ExpiredJwtException e) {
             throw new AccessDeniedException("Acceso denegado: " + e.getMessage());
         }
     }
