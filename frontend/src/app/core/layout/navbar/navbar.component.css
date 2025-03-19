@@ -1,0 +1,85 @@
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: white;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+    /* Hacemos responsive los botones */
+    @media (max-width: 600px) {
+        gap: 8px;
+
+        button {
+            padding: 0 8px;
+            min-width: auto;
+        }
+    }
+}
+
+mat-toolbar {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--color-principal);
+    width: 100%;
+
+    /* Ajustes responsive para el toolbar */
+    @media (max-width: 600px) {
+        padding: 0 8px;
+    }
+}
+
+/* Ajustes para los botones */
+button[mat-button],
+button[mat-raised-button] {
+    display: flex;
+        /* Añadido para mejor control del layout */
+        align-items: center;
+        /* Centra verticalmente */
+        gap: 8px;
+        /* Espacio entre el icono y el texto */
+        border-radius: 5px;
+
+    &.login-btn {
+        background-color: transparent;
+        color: white;
+    }
+
+    &.register-btn {
+        background-color: var(--primary-button-bg);
+        color: white;
+    }
+
+    /* Responsive para móviles */
+    @media (max-width: 600px) {
+        .button-text {
+            display: none;
+            /* Ocultamos el texto en móvil */
+        }
+
+        mat-icon {
+            margin: 0;
+            /* Quitamos el margen del icono */
+        }
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 360px) {
+    .title {
+        font-size: 1.2rem;
+    }
+}
