@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @Getter @Setter
 public class JornadaRequest {
 
-    @NotBlank(message = "El id del empleado es obligatorio.")
-    String idEmpleado;
+    @NotBlank(message = "El id del usuario es obligatorio.")
+    String idUser;
 
     @NotNull(message = "El id del concepto es obligatorio.")
     Integer idConcepto;

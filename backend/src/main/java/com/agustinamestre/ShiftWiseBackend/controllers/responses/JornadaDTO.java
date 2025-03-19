@@ -7,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 
 @NoArgsConstructor
@@ -26,8 +25,8 @@ public class JornadaDTO implements Serializable {
     public static JornadaDTO mapFromJornada(Jornada jornada, Concepto concepto){
         return JornadaDTO.builder()
                 .idJornada(jornada.getIdJornada())
-                .nroDocumento(jornada.getEmpleado().getNroDocumento())
-                .nombreCompleto(jornada.getEmpleado().getNombre() + " " + jornada.getEmpleado().getApellido())
+                .nroDocumento(jornada.getUser().getNroDocumento())
+                .nombreCompleto(jornada.getUser().getNombre() + " " + jornada.getUser().getApellido())
                 .fecha(jornada.getFecha())
                 .concepto(concepto.getNombre())
                 .horasTrabajadas(jornada.getHorasTrabajadas())

@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = AdultoValidator.class)
 public @interface Adulto {
-    String message() default "La edad del empleado no puede ser menor a 18 años.";
+    String message() default "La edad del usuario no puede ser menor a 18 años.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

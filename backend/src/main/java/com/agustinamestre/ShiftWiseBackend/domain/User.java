@@ -1,6 +1,6 @@
 package com.agustinamestre.ShiftWiseBackend.domain;
 
-import com.agustinamestre.ShiftWiseBackend.controllers.requests.EmpleadoRequest;
+import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserRequest;
 import com.github.ksuid.Ksuid;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,9 +14,9 @@ import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter @Setter @Builder
-@Entity(name = "empleados")
+@Entity(name = "users")
 @AllArgsConstructor @NoArgsConstructor
-public class Empleado {
+public class User {
 
     @Id
     String id;
@@ -48,13 +48,15 @@ public class Empleado {
     @Column(nullable = false)
     String password;
 
-    @OneToMany(mappedBy="empleado", cascade = CascadeType.ALL)
+    String role;
+
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
     private List<Jornada> jornadas = new ArrayList<>();
 
-    public static Empleado mapFromEmpleadoRequest(EmpleadoRequest request) {
+    public static User mapFromUserRequest(UserRequest request) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
-        return Empleado.builder()
+        return User.builder()
                 .id("emp-" + Ksuid.newKsuid().toString())
                 .nroDocumento(request.getNroDocumento())
                 .nombre(request.getNombre())

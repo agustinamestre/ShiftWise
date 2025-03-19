@@ -9,10 +9,10 @@ import com.agustinamestre.ShiftWiseBackend.exceptions.BusinessException;
 import com.agustinamestre.ShiftWiseBackend.exceptions.ResourceNotFoundException;
 import com.agustinamestre.ShiftWiseBackend.models.error.ShiftWiseErrors;
 import com.agustinamestre.ShiftWiseBackend.repositories.ConceptoRepository;
-import com.agustinamestre.ShiftWiseBackend.repositories.EmpleadoRepository;
+import com.agustinamestre.ShiftWiseBackend.repositories.UserRepository;
 import com.agustinamestre.ShiftWiseBackend.repositories.JornadaRepository;
 import com.agustinamestre.ShiftWiseBackend.services.JornadaService;
-import com.agustinamestre.ShiftWiseBackend.services.ValidadorJornadasFactory;
+import com.agustinamestre.ShiftWiseBackend.services.validator.ValidadorJornadasFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,19 +22,19 @@ import java.util.List;
 @Service
 public class JornadaServiceImpl implements JornadaService {
 
-    final EmpleadoRepository empleadoRepository;
+    final UserRepository userRepository;
     final ConceptoRepository conceptoRepository;
     final JornadaRepository jornadaRepository;
     final ValidadorJornadasFactory validadorJornadasFactory;
 
     @Autowired
     public JornadaServiceImpl(
-            EmpleadoRepository empleadoRepository,
+            UserRepository userRepository,
             ConceptoRepository conceptoRepository,
             JornadaRepository jornadaRepository,
             ValidadorJornadasFactory validadorJornadasFactory
     ) {
-        this.empleadoRepository = empleadoRepository;
+        this.userRepository = userRepository;
         this.conceptoRepository = conceptoRepository;
         this.jornadaRepository = jornadaRepository;
         this.validadorJornadasFactory = validadorJornadasFactory;
@@ -43,8 +43,8 @@ public class JornadaServiceImpl implements JornadaService {
     @Override
     public JornadaDTO crearJornada(JornadaRequest request) {
 
-        var empleado = empleadoRepository.findById(request.getIdEmpleado().toString())
-                .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.EMPLEADO_NOT_FOUND));
+        var user = userRepository.findById(request.getIdUser())
+                .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.USER_NOT_FOUND));
 
         var concepto = conceptoRepository.findById(request.getIdConcepto())
                 .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.CONCEPTO_NOT_FOUND));
@@ -52,7 +52,7 @@ public class JornadaServiceImpl implements JornadaService {
         var jornada = Jornada.mapFromJornadaRequest(request);
 
         jornada.agregarConcepto(concepto);
-        jornada.setEmpleado(empleado);
+        jornada.setUser(user);
 
         validadorJornadasFactory.obtenerValidador(concepto.obtenerConceptoType()).validar(jornada);
 
@@ -77,8 +77,8 @@ public class JornadaServiceImpl implements JornadaService {
     }
 
     private void validarConceptosEnJornada(Jornada jornada, Concepto concepto) {
-        //jornadas de un empleado para el mismo dia
-        var jornadas = jornadaRepository.jornadasEmpleadoMismoDia(jornada.getEmpleado().getNroDocumento(), jornada.getFecha());
+        //jornadas de un usuario para el mismo dia
+        var jornadas = jornadaRepository.jornadasUserMismoDia(jornada.getUser().getNroDocumento(), jornada.getFecha());
 
         //conceptos de la jornada
         jornadas.stream()
@@ -107,7 +107,7 @@ public class JornadaServiceImpl implements JornadaService {
             return;
         }
 
-        var jornadas = jornadaRepository.jornadasEmpleadoMismoDia(jornada.getEmpleado().getNroDocumento(), jornada.getFecha());
+        var jornadas = jornadaRepository.jornadasUserMismoDia(jornada.getUser().getNroDocumento(), jornada.getFecha());
 
         int horasTrabajadasTotal = jornadas.stream()
                 .mapToInt(Jornada::getHorasTrabajadas)

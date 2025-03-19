@@ -1,4 +1,4 @@
-package com.agustinamestre.ShiftWiseBackend.services;
+package com.agustinamestre.ShiftWiseBackend.services.validator;
 
 import com.agustinamestre.ShiftWiseBackend.domain.Jornada;
 

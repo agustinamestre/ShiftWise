@@ -1,4 +1,4 @@
-package com.agustinamestre.ShiftWiseBackend.services;
+package com.agustinamestre.ShiftWiseBackend.services.validator;
 
 import com.agustinamestre.ShiftWiseBackend.domain.ConceptoType;
 import com.agustinamestre.ShiftWiseBackend.domain.Jornada;
@@ -6,6 +6,7 @@ import com.agustinamestre.ShiftWiseBackend.exceptions.BusinessException;
 import com.agustinamestre.ShiftWiseBackend.models.error.ShiftWiseErrors;
 
 import static java.util.Objects.isNull;
+
 import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Component
-public class ValidadorJornadaNormalStrategy implements ValidadorJornada{
+public class ValidadorJornadaNormalStrategy implements ValidadorJornada {
 
     @Override
     public void validar(Jornada jornada) {
@@ -29,7 +30,7 @@ public class ValidadorJornadaNormalStrategy implements ValidadorJornada{
         LocalDate lunes = fecha.with(DayOfWeek.MONDAY); //busco el lunes de esa semana
         LocalDate domingo = fecha.with(DayOfWeek.SUNDAY); //busco el domingo de esa semana
 
-        var jornadas = jornada.getEmpleado()
+        var jornadas = jornada.getUser()
                 .getJornadas()
                 .stream()
                 .filter(j -> j.getFecha()
