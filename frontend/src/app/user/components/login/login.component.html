@@ -1,0 +1,47 @@
+<div class="login-container">
+    <mat-card class="login-card">
+        <mat-card-header>
+            <mat-card-title>Iniciar Sesión</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form>
+                <!-- Número de Documento -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label for="documento">Número de Documento</mat-label>
+                    <input matInput formControlName="documento" type="text">
+                </mat-form-field>
+
+                <!-- Contraseña -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label for="contraseña">Contraseña</mat-label>
+                    <input matInput id="password" formControlName="password" type="password">
+                    <button mat-icon-button matSuffix type="button">
+                    </button>
+                </mat-form-field>
+
+                <!-- Checkbox Recordarme -->
+                <div class="remember-forgot">
+                    <mat-checkbox formControlName="recordar" color="primary">
+                        Recordarme
+                    </mat-checkbox>
+                    <a routerLink="/forgot-password" class="forgot-password">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </div>
+
+                <!-- Botón de Login -->
+                <button mat-raised-button color="primary" type="submit" class="login-button">
+                    <mat-icon>login</mat-icon>
+                    <span>Iniciar Sesión</span>
+                </button>
+
+                <!-- Texto de Registro -->
+                <div class="register-section">
+                    <span>¿No sos usuario? </span>
+                    <a routerLink="/registro" class="register-link">Registrate</a>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

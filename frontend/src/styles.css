@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; padding-top: 64px; padding-bottom: 64px;}
+:root {
+    --color-principal: #0c2a55;
+    --primary-button-bg: #26a69a;
+    --secondary-button-bg: #ef5350;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding-top: 56px;
+    }
+}
+
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
