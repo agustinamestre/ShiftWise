@@ -4,6 +4,7 @@ import { NavbarComponent } from "./core/layout/navbar/navbar.component";
 import { FooterComponent } from "./core/layout/footer/footer.component";
 import { LoginComponent } from "./user/components/login/login.component";
 import { RegisterComponent } from "./user/components/user/user.component";
+import { HomeComponent } from "./core/layout/home/home.component";
 
 @Component({
 
@@ -14,7 +15,8 @@ import { RegisterComponent } from "./user/components/user/user.component";
     NavbarComponent,
     FooterComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    HomeComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

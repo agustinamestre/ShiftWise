@@ -1,0 +1,10 @@
+.page {
+    flex-grow: 1;
+    margin: 75px auto;
+}
+
+@media (min-width: 1200px) {
+    .page {
+        max-width: 50%;
+    }
+}
