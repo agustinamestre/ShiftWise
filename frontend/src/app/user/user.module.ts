@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
-import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+
 
 
 @NgModule({
-  imports: [
-    CommonModule, 
-    MaterialModule, 
-    RouterModule],
+  declarations: [],
+  imports: [CommonModule, MaterialModule, HttpClientModule],
 })
-export class CoreModule {}
+export class UserModule {}

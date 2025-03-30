@@ -1,0 +1,20 @@
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import UserRequest from "../interfaces/UserRequest";
+import { Observable } from "rxjs";
+import { UserResponse } from "../interfaces/UserResponse";
+import { environment } from "../../../environments/environments";
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserService {
+  endpoint: string = 'users';
+  constructor(private http: HttpClient) {}
+
+  createUser(request: UserRequest): Observable<UserResponse> {
+    let url = environment.api + this.endpoint;
+
+        return this.http.post<UserResponse>(url, request);
+  }
+}
