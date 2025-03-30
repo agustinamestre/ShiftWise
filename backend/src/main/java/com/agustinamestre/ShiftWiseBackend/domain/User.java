@@ -57,7 +57,7 @@ public class User {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
         return User.builder()
-                .id("emp-" + Ksuid.newKsuid().toString())
+                .id("usr-" + Ksuid.newKsuid().toString())
                 .nroDocumento(request.getNroDocumento())
                 .nombre(request.getNombre())
                 .apellido(request.getApellido())
@@ -67,6 +67,7 @@ public class User {
                 .fechaIngreso(request.getFechaIngreso())
                 .fotoBase64(request.getFotoBase64())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .role("user")
                 .build();
     }
 }
