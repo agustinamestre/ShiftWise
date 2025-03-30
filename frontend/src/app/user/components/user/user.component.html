@@ -1,0 +1,106 @@
+<div class="user-container">
+    <mat-card class="user-card">
+        <mat-card-header>
+            <mat-card-title>Registrarse</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form  [formGroup]="form">
+                <!-- Nombre -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nombre</mat-label>
+                    <input
+                     matInput
+                    formControlName="nombre" 
+                    pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$"
+                    />
+                </mat-form-field>
+
+                <!-- Apellido -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Apellido</mat-label>
+                    <input 
+                    matInput 
+                    formControlName="apellido" 
+                    pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$"
+                    />
+                </mat-form-field>
+
+                <!-- Número de Documento -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Número de Documento</mat-label>
+                    <input matInput formControlName="nroDocumento" type="text">
+                </mat-form-field>
+
+                <!-- Email -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" type="email">
+                    <mat-icon matSuffix>email</mat-icon>
+                </mat-form-field>
+
+                <!-- Fecha de Nacimiento -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Fecha de Nacimiento</mat-label>
+                    <input 
+                      matInput 
+                      [matDatepicker]="picker" 
+                      formControlName="fechaNacimiento"
+                    />
+                    <mat-datepicker-toggle 
+                      matIconSuffix 
+                      [for]="picker"
+                      ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <!-- Fecha de Ingreso -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Fecha de Ingreso</mat-label>
+                    <input 
+                    matInput 
+                    [matDatepicker]="picker1" 
+                    formControlName="fechaIngreso" 
+                    />
+                    <mat-datepicker-toggle 
+                       matIconSuffix 
+                       [for]="picker1"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+
+                <!-- Contraseña -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput formControlName="password">
+                    <button mat-icon-button matSuffix>
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <!-- Foto -->
+                <div class="photo-upload">
+                    <label>Foto de Perfil</label>
+                    <button mat-stroked-button type="button">
+                        <mat-icon>cloud_upload</mat-icon>
+                        <span>Subir foto</span>
+                    </button>
+                    <input formControlName="foto" #fileInput type="file" style="display: none">
+                    <span class="file-name"></span>
+                </div>
+
+                <!-- Botón de Registro -->
+                <button type="submit" (click)="onSubmit()" mat-raised-button color="primary" class="login-button" >
+                    <mat-icon>how_to_reg</mat-icon>
+                    <span>Registrarse</span>
+                </button>
+
+                <!-- Texto de Login -->
+                <div class="register-section">
+                    <span>¿Ya sos usuario? </span>
+                    <a routerLink="/login" class="register-link">Inicia sesión</a>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
