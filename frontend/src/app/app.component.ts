@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from "./core/layout/navbar/navbar.component";
-import { FooterComponent } from "./core/layout/footer/footer.component";
-import { LoginComponent } from "./user/components/login/login.component";
-import { RegisterComponent } from "./user/components/user/user.component";
-import { HomeComponent } from "./core/layout/home/home.component";
+import { NavbarComponent } from './core/layout/components/navbar/navbar.component';
+import { FooterComponent } from './core/layout/components/footer/footer.component';
+import { LoginComponent } from './user/components/login/login.component';
+import { UserComponent } from './user/components/user/user.component';
+import { HomeComponent } from './core/layout/components/home/home.component';
 
 @Component({
-
   selector: 'app-root',
   standalone: true,
   imports: [
@@ -15,9 +14,9 @@ import { HomeComponent } from "./core/layout/home/home.component";
     NavbarComponent,
     FooterComponent,
     LoginComponent,
-    RegisterComponent,
-    HomeComponent
-],
+    UserComponent,
+    HomeComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
