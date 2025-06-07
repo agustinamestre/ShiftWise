@@ -95,7 +95,7 @@ export class UserComponent implements OnInit {
     if (this.isNew) {
       this.userService.createUser(user).subscribe({
         next: (response) => {
-          this.toastr.success('¡Empleado creado exitosamente!');
+          this.toastr.success('Usuario creado exitosamente!');
         },
         error: (err: HttpErrorResponse) => {
           this.handleError(err);
