@@ -11,24 +11,42 @@ import {
 } from '@angular/forms';
 import UserRequest from '../../interfaces/UserRequest';
 import User from '../../interfaces/User';
+import ErrorResponse from '../../../models/ErrorResponse';
+import { CommonModule, Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
+import { mapBackendErrorToErrorResponse } from '../../../models/error-utils';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule],
+  imports: [MaterialModule, ReactiveFormsModule, CommonModule],
   templateUrl: './user.component.html',
-  styleUrl: './user.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./user.component.css'],
 })
-export class RegisterComponent implements OnInit {
+export class UserComponent implements OnInit {
   form!: FormGroup;
   user: User | null = null;
+  today: Date = new Date();
+  isNew = false;
+  isEdition = false;
+  isDetail = false;
+  title: string = '';
 
   constructor(
     private userService: UserService,
     private router: Router,
-    private readonly fb: FormBuilder
-  ) {}
+    private location: Location,
+    private readonly fb: FormBuilder,
+    private toastr: ToastrService
+  ) {
+    const path = this.location.path();
+
+    if (path.includes('new')) {
+      this.isNew = true;
+      this.title = 'Registrarse';
+    }
+  }
 
   ngOnInit(): void {
     this.buildForm();
@@ -74,13 +92,47 @@ export class RegisterComponent implements OnInit {
       password: this.form.get('password')?.value,
     };
 
-    this.userService.createUser(user).subscribe({
-      next: (response) => {
-        console.log('Usuario creado exitosamente', response);
-      },
-      error: (error) => {
-        console.error('Error al crear el usuario', error);
-      },
-    });
+    if (this.isNew) {
+      this.userService.createUser(user).subscribe({
+        next: (response) => {
+          this.toastr.success('¡Empleado creado exitosamente!');
+        },
+        error: (err: HttpErrorResponse) => {
+          this.handleError(err);
+        },
+      });
+    }
+  }
+
+  handleError(error: HttpErrorResponse) {
+    if (error.error && error.error.error) {
+      const adaptedError = mapBackendErrorToErrorResponse(
+        error.error,
+        error.status
+      );
+      this.toastr.error(adaptedError.genericErrorMessage);
+    } else {
+      this.toastr.error('Ocurrió un error inesperado.');
+    }
+  }
+
+  getFormControlErrorMessage(name: string) {
+    const formControlErrors = this.form.get(name)?.errors;
+
+    return formControlErrors
+      ? formControlErrors['errorMessage']
+      : 'Invalid value';
+  }
+
+  onDocumentNumberKeyDown(e: any) {
+    if (
+      !(
+        (e.keyCode > 95 && e.keyCode < 106) ||
+        (e.keyCode > 47 && e.keyCode < 58) ||
+        e.keyCode == 8
+      )
+    ) {
+      e.preventDefault();
+    }
   }
 }

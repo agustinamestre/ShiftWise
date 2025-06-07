@@ -1,7 +1,7 @@
 <div class="user-container">
     <mat-card class="user-card">
         <mat-card-header>
-            <mat-card-title>Registrarse</mat-card-title>
+            <mat-card-title>{{ title }}</mat-card-title>
         </mat-card-header>
 
         <mat-card-content>
@@ -11,59 +11,79 @@
                     <mat-label>Nombre</mat-label>
                     <input
                      matInput
-                    formControlName="nombre" 
+                    formControlName="nombre"
                     pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$"
                     />
+                    <mat-error *ngIf="form.get('nombre')?.hasError('pattern')">
+                      Solo se permiten letras en el campo nombre.
+                    </mat-error>
                 </mat-form-field>
 
                 <!-- Apellido -->
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Apellido</mat-label>
-                    <input 
-                    matInput 
-                    formControlName="apellido" 
+                    <input
+                    matInput
+                    formControlName="apellido"
                     pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$"
                     />
+                    <mat-error *ngIf="form.get('apellido')?.hasError('pattern')">
+                      Solo se permiten letras en el campo apellido.
+                    </mat-error>
                 </mat-form-field>
 
                 <!-- Número de Documento -->
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Número de Documento</mat-label>
-                    <input matInput formControlName="nroDocumento" type="text">
+                    <input matInput
+                      formControlName="nroDocumento"
+                      type="number"
+                     (keydown)="onDocumentNumberKeyDown($event)"
+                      >
                 </mat-form-field>
 
                 <!-- Email -->
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" type="email">
+                    <input matInput
+                      formControlName="email"
+                      type="email"
+                    >
+                    <mat-error *ngIf="form.get('email')?.hasError('email')">
+                      El email ingresado no es correcto.
+                    </mat-error>
                     <mat-icon matSuffix>email</mat-icon>
                 </mat-form-field>
 
                 <!-- Fecha de Nacimiento -->
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Fecha de Nacimiento</mat-label>
-                    <input 
-                      matInput 
-                      [matDatepicker]="picker" 
+                    <input
+                      [max]="today"
+                      matInput
+                      [matDatepicker]="picker"
                       formControlName="fechaNacimiento"
                     />
-                    <mat-datepicker-toggle 
-                      matIconSuffix 
+                    <mat-datepicker-toggle
+                      matIconSuffix
                       [for]="picker"
                       ></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="form.get('fechaNacimiento')?.invalid">
+                      {{ getFormControlErrorMessage("fechaNacimiento") }}</mat-error>
                 </mat-form-field>
 
                 <!-- Fecha de Ingreso -->
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Fecha de Ingreso</mat-label>
-                    <input 
-                    matInput 
-                    [matDatepicker]="picker1" 
-                    formControlName="fechaIngreso" 
+                    <input
+                     [max]="today"
+                     matInput
+                     [matDatepicker]="picker1"
+                     formControlName="fechaIngreso"
                     />
-                    <mat-datepicker-toggle 
-                       matIconSuffix 
+                    <mat-datepicker-toggle
+                       matIconSuffix
                        [for]="picker1"
                     ></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
