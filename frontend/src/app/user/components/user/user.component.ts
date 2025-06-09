@@ -11,7 +11,6 @@ import {
 } from '@angular/forms';
 import UserRequest from '../../interfaces/UserRequest';
 import User from '../../interfaces/User';
-import ErrorResponse from '../../../models/ErrorResponse';
 import { CommonModule, Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -32,6 +31,8 @@ export class UserComponent implements OnInit {
   isEdition = false;
   isDetail = false;
   title: string = '';
+  selectedFileName: string = '';
+  selectedFileUrl: string | null = null;
 
   constructor(
     private userService: UserService,
@@ -95,12 +96,27 @@ export class UserComponent implements OnInit {
     if (this.isNew) {
       this.userService.createUser(user).subscribe({
         next: (response) => {
-          this.toastr.success('¡Empleado creado exitosamente!');
+          this.toastr.success('Empleado creado exitosamente!');
         },
         error: (err: HttpErrorResponse) => {
           this.handleError(err);
         },
       });
+    }
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.selectedFileName = file.name;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedFileUrl = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
