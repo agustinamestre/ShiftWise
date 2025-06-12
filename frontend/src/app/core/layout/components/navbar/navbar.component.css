@@ -13,22 +13,6 @@
     flex: 1 1 auto;
 }
 
-.auth-buttons {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-
-    /* Hacemos responsive los botones */
-    @media (max-width: 600px) {
-        gap: 8px;
-
-        button {
-            padding: 0 8px;
-            min-width: auto;
-        }
-    }
-}
-
 mat-toolbar {
     position: fixed;
     top: 0;
@@ -42,40 +26,13 @@ mat-toolbar {
     }
 }
 
-/* Ajustes para los botones */
-button[mat-button],
-button[mat-raised-button] {
-    display: flex;
-        /* Añadido para mejor control del layout */
-        align-items: center;
-        /* Centra verticalmente */
-        gap: 8px;
-        /* Espacio entre el icono y el texto */
-        border-radius: 5px;
-
-    &.login-btn {
-        background-color: transparent;
-        color: white;
-    }
-
-    &.register-btn {
-        background-color: var(--primary-button-bg);
-        color: white;
-    }
-
-    /* Responsive para móviles */
-    @media (max-width: 600px) {
-        .button-text {
-            display: none;
-            /* Ocultamos el texto en móvil */
-        }
-
-        mat-icon {
-            margin: 0;
-            /* Quitamos el margen del icono */
-        }
-    }
+/* Responsive para móviles */
+@media (max-width: 600px) {
+  mat-icon {
+    margin: 0;
+  }
 }
+
 
 /* Ajustes para pantallas muy pequeñas */
 @media (max-width: 360px) {
