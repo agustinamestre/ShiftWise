@@ -1,6 +1,13 @@
 .landing-container {
   display: flex;
-  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 64px;
 }
 
 .left-column {
@@ -10,48 +17,109 @@
   flex-direction: column;
   justify-content: center;
   padding: 4rem;
+  min-height: 100%;
 }
 
 .left-column h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+  line-height: 1.2;
 }
 
 .left-column p {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  margin-bottom: 2.5rem;
   color: #4b5563;
+  line-height: 1.6;
+  max-width: 500px;
 }
 
 .start-button {
   display: inline-block;
-  background-color: #3b82f6;
+  background-color: var(--color-principal);
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem;
   text-decoration: none;
-  border-radius: 0.5rem;
-  font-weight: bold;
-  transition: background-color 0.3s;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(12, 42, 85, 0.1);
+  align-self: flex-start;
 }
 
 .start-button:hover {
-  background-color: #2563eb;
+  background-color: #0a1e3d;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(12, 42, 85, 0.2);
+}
+
+.start-button:active {
+  transform: translateY(0);
 }
 
 .right-column {
   flex: 1;
   background-color: #e5e7eb;
-  /* Más adelante podés usar background-image aquí */
+  background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.image {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 @media (max-width: 768px) {
   .landing-container {
     flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 64px;
+    height: auto;
   }
 
-  .left-column,
+  .left-column {
+    padding: 2rem;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .left-column h1 {
+    font-size: 2.5rem;
+  }
+
+  .left-column p {
+    font-size: 1.1rem;
+  }
+
   .right-column {
-    flex: none;
-    height: 50vh;
+    flex: 1;
+    min-height: 200px;
   }
 }

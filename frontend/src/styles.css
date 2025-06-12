@@ -1,9 +1,15 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-    overflow-y: auto; }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 
 body {
      font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -13,6 +19,12 @@ body {
     --color-principal: #0c2a55;
     --primary-button-bg: #26a69a;
     --secondary-button-bg: #ef5350;
+}
+
+.page {
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 
 @media (max-width: 600px) {
