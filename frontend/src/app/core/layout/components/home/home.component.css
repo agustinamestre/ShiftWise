@@ -1,0 +1,57 @@
+.landing-container {
+  display: flex;
+  height: 100vh;
+}
+
+.left-column {
+  flex: 1;
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem;
+}
+
+.left-column h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.left-column p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #4b5563;
+}
+
+.start-button {
+  display: inline-block;
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.start-button:hover {
+  background-color: #2563eb;
+}
+
+.right-column {
+  flex: 1;
+  background-color: #e5e7eb;
+  /* Más adelante podés usar background-image aquí */
+}
+
+@media (max-width: 768px) {
+  .landing-container {
+    flex-direction: column;
+  }
+
+  .left-column,
+  .right-column {
+    flex: none;
+    height: 50vh;
+  }
+}

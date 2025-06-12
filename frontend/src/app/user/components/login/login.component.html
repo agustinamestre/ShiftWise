@@ -39,7 +39,7 @@
                 <!-- Texto de Registro -->
                 <div class="register-section">
                     <span>¿No sos usuario? </span>
-                    <a routerLink="/registro" class="register-link">Registrate</a>
+                    <a [routerLink]="['/' + appRoutes.NEW_USER]" class="register-link">Registrate</a>
                 </div>
             </form>
         </mat-card-content>
