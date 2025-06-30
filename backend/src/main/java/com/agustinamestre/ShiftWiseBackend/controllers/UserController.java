@@ -26,7 +26,8 @@ public class UserController {
     @PostMapping(path="")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserDTO> signIn(@RequestBody @Valid UserRequest request){
-        return ResponseEntity.ok(userService.crearUser(request)) ;
+        UserDTO userDto = userService.crearUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
     @GetMapping("")

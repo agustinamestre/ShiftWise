@@ -42,7 +42,7 @@ public class User {
     @CreatedDate
     LocalDate fechaCreacion = LocalDate.now();
 
-    @Column(nullable = false)
+    @Lob
     String fotoBase64;
 
     @Column(nullable = false)
@@ -52,6 +52,8 @@ public class User {
 
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
     private List<Jornada> jornadas = new ArrayList<>();
+
+
 
     public static User mapFromUserRequest(UserRequest request) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);

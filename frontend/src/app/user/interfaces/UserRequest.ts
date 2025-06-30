@@ -5,6 +5,6 @@ export default interface UserRequest {
   email: string;
   fechaNacimiento: string;
   fechaIngreso: string;
-  fotoBase64?: string;
+  fotoBase64?: string | null;
   password: string;
 }

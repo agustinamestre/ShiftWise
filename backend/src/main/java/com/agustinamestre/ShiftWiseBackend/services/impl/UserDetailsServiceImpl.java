@@ -3,6 +3,7 @@ package com.agustinamestre.ShiftWiseBackend.services.impl;
 import com.agustinamestre.ShiftWiseBackend.exceptions.ResourceNotFoundException;
 import com.agustinamestre.ShiftWiseBackend.models.error.ShiftWiseErrors;
 import com.agustinamestre.ShiftWiseBackend.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
+@Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
