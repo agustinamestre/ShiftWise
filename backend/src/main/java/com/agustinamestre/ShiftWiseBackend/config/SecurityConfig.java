@@ -44,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/shiftwise/v1/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/shiftwise/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/shiftwise/v1/users").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
 //            our private endpoints
                         .anyRequest().authenticated())
                 .authenticationManager(authenticationManager)
