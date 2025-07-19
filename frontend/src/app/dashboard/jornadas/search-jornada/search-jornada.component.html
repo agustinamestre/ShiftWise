@@ -1,0 +1,128 @@
+<div class="page-content">
+  <h2 class="page-title">Jornadas</h2>
+
+  <div class="container">
+    <mat-card class="search-card">
+      <mat-card-content>
+        <form [formGroup]="form" class="search-form">
+
+          <!-- Campo de documento -->
+          <mat-form-field appearance="outline" class="doc-input">
+            <mat-label>Número de Documento</mat-label>
+            <input
+              matInput
+              formControlName="nroDocumento"
+              placeholder="Ingresa el documento"
+              type="number"
+            />
+          </mat-form-field>
+
+          <!-- Campo de fecha -->
+          <mat-form-field appearance="outline" class="date-input">
+            <mat-label>Fecha</mat-label>
+            <input
+              matInput
+              formControlName="fecha"
+              [matDatepicker]="picker1"
+              placeholder="Ingresa la fecha"
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+
+          <!-- Botón de búsqueda -->
+          <button
+            mat-mini-fab
+            class="search-button"
+            title="Buscar"
+            type="submit">
+
+            <mat-icon>search</mat-icon>
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Listado Jornadas -->
+  <h2 class="page-title">Listado Jornadas</h2>
+
+  <div class="container">
+    <mat-card class="results-card">
+      <mat-card-content class="contenido">
+
+        <!-- Botón Nueva Jornada -->
+        <div class="container-titulo-btnCrear">
+          <button
+            mat-mini-fab
+            class="nueva-button"
+            title="Nueva Jornada"
+            type="button">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <!-- Mensaje cuando no hay resultados -->
+        <div *ngIf="jornadas.length === 0" class="no-results-message">
+          <p><em>Para buscar jornadas presione el botón buscar (lupa).</em></p>
+        </div>
+
+        <!-- Tabla de resultados -->
+        <div *ngIf="jornadas.length > 0" class="table-container">
+          <table mat-table class="jornadas-table">
+
+            <!-- Columna Número de Documento -->
+            <ng-container matColumnDef="nroDocumento">
+              <th mat-header-cell >Nro. Documento</th>
+              <td mat-cell>
+                <!-- {{ element.nroDocumento }} -->
+              </td>
+            </ng-container>
+
+            <!-- Columna Nombre y Apellido -->
+            <ng-container matColumnDef="nombreCompleto">
+              <th mat-header-cell >Nombre y Apellido</th>
+              <td mat-cell >
+                <!-- {{ element.nombreCompleto }} -->
+              </td>
+            </ng-container>
+
+            <!-- Columna Turno -->
+            <ng-container matColumnDef="concepto">
+              <th mat-header-cell >Turno</th>
+              <td mat-cell >
+                <!-- {{ element.concepto }} -->
+              </td>
+            </ng-container>
+
+            <!-- Columna Fecha -->
+            <ng-container matColumnDef="fecha">
+              <th mat-header-cell >Fecha</th>
+              <td mat-cell >
+                <!-- {{ element.fecha | date:'dd/MM/yyyy' }} -->
+              </td>
+            </ng-container>
+
+            <!-- Columna Horas Trabajadas -->
+            <ng-container matColumnDef="horasTrabajadas">
+              <th mat-header-cell >Horas</th>
+              <td mat-cell >
+                <!-- {{ element.horasTrabajadas ?? '-' }} -->
+              </td>
+            </ng-container>
+
+            <!-- Definición de filas -->
+            <tr mat-header-row ></tr>
+            <tr mat-row ></tr>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div class="btns">
+  <button mat-stroked-button class="btnVolver">
+    Volver
+  </button>
+</div>
