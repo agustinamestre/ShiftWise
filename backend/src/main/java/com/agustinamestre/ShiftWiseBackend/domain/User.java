@@ -48,7 +48,9 @@ public class User {
     @Column(nullable = false)
     String password;
 
-    String role;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_perfil", nullable = false)
+    private Perfil perfil;
 
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
     private List<Jornada> jornadas = new ArrayList<>();
@@ -69,7 +71,6 @@ public class User {
                 .fechaIngreso(request.getFechaIngreso())
                 .fotoBase64(request.getFotoBase64())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role("user")
                 .build();
     }
 }

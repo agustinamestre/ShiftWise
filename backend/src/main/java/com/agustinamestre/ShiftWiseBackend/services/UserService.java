@@ -2,6 +2,8 @@ package com.agustinamestre.ShiftWiseBackend.services;
 
 import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserRequest;
 import com.agustinamestre.ShiftWiseBackend.controllers.responses.UserDTO;
+import com.agustinamestre.ShiftWiseBackend.domain.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
