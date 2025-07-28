@@ -5,6 +5,7 @@ import com.agustinamestre.ShiftWiseBackend.controllers.responses.UserDTO;
 import com.agustinamestre.ShiftWiseBackend.domain.User;
 import com.agustinamestre.ShiftWiseBackend.exceptions.BusinessException;
 import com.agustinamestre.ShiftWiseBackend.exceptions.ResourceNotFoundException;
+import com.agustinamestre.ShiftWiseBackend.exceptions.UnauthorizedException;
 import com.agustinamestre.ShiftWiseBackend.models.error.ShiftWiseErrors;
 import com.agustinamestre.ShiftWiseBackend.repositories.UserRepository;
 import com.agustinamestre.ShiftWiseBackend.services.UserService;
@@ -14,9 +15,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
@@ -25,12 +28,13 @@ import static java.util.Objects.requireNonNull;
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
-
+    PasswordEncoder passwordEncoder;
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -100,5 +104,16 @@ public class UserServiceImpl implements UserService {
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(ShiftWiseErrors.USER_NOT_FOUND);
         }
+    }
+
+    public User obtenerUsuario(String documento, String password) {
+        var usuario = userRepository.findByNroDocumento(documento)
+                .orElseThrow(() -> new UnauthorizedException("Usuario inexistente"));
+
+        if(!passwordEncoder.matches(password, usuario.getPassword())){
+            throw new UnauthorizedException("Credenciales incorrectas");
+        }
+
+        return usuario;
     }
 }

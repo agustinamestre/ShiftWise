@@ -6,6 +6,7 @@ import com.agustinamestre.ShiftWiseBackend.domain.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -14,4 +15,5 @@ public interface UserService {
     UserDTO obtenerUser(String id);
     UserDTO editarUser(String id, UserRequest request);
     void eliminarUser(String id);
+    User obtenerUsuario(String documento, String password);
 }
