@@ -3,7 +3,8 @@ export type UserResponse = {
   nombre: string;
   apellido: string;
   email: string;
-  fechaNacimiento: string; 
-  fechaIngreso: string; 
+  fechaNacimiento: string;
+  fechaIngreso: string;
   foto?: string;
+  fechaCreacion: string;
 };
