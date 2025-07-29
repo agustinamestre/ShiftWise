@@ -15,6 +15,16 @@ export class UserService {
   createUser(request: UserRequest): Observable<UserResponse> {
     let url = environment.api + this.endpoint;
 
-        return this.http.post<UserResponse>(url, request);
+    return this.http.post<UserResponse>(url, request);
+  }
+
+  getUserById(id: string): Observable<UserResponse> {
+    let url = `${environment.api}${this.endpoint}/${id}`;
+    return this.http.get<UserResponse>(url);
+  }
+
+  getUsers(): Observable<UserResponse[]> {
+    let url = environment.api + this.endpoint;
+    return this.http.get<UserResponse[]>(url);
   }
 }

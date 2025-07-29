@@ -7,5 +7,5 @@ export default interface User {
   fechaIngreso?: string;
   fechaCreacion?: string;
   fotoBase64?: string;
-  password: string;
+  password?: string;
 }

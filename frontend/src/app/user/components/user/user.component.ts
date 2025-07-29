@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { MaterialModule } from '../../../material/material.module';
-import { UserService } from '../../services/User.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -11,15 +10,17 @@ import {
 } from '@angular/forms';
 import UserRequest from '../../interfaces/UserRequest';
 import User from '../../interfaces/User';
+import { UserService } from '../../services/user.service';
 import { CommonModule, Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { mapBackendErrorToErrorResponse } from '../../../models/error-utils';
+import { UserResponse } from '../../interfaces/UserResponse';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule, CommonModule],
+  imports: [MaterialModule, ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
 })
@@ -31,21 +32,31 @@ export class UserComponent implements OnInit {
   isEdition = false;
   isDetail = false;
   title: string = '';
+  userId = '';
   selectedFileName: string = '';
   selectedFileUrl: string | null = null;
+  base64Image: string | null = null;
 
   constructor(
     private userService: UserService,
-    private router: Router,
+    private route: ActivatedRoute,
     private location: Location,
     private readonly fb: FormBuilder,
     private toastr: ToastrService
   ) {
     const path = this.location.path();
 
+    this.route.params.subscribe((params) => {
+      this.userId = params['id'];
+    });
+
     if (path.includes('new')) {
       this.isNew = true;
       this.title = 'Registrarse';
+    } else if (path.includes('edit')) {
+      this.getUser();
+      this.isEdition = true;
+      this.title = 'Editar Usuario';
     }
   }
 
@@ -89,7 +100,7 @@ export class UserComponent implements OnInit {
         .get('fechaIngreso')
         ?.value.toISOString()
         .split('T')[0],
-      fotoBase64: this.form.get('foto')?.value,
+      fotoBase64: this.base64Image,
       password: this.form.get('password')?.value,
     };
 
@@ -105,6 +116,39 @@ export class UserComponent implements OnInit {
     }
   }
 
+  private getUser() {
+    this.userService
+      .getUserById(this.userId)
+      .subscribe((userData: UserResponse) => {
+        if (userData) {
+          this.user = {
+            nroDocumento: userData.nroDocumento,
+            nombre: userData.nombre,
+            apellido: userData.apellido,
+            email: userData.email,
+            fechaNacimiento: userData.fechaNacimiento,
+            fechaIngreso: userData.fechaIngreso,
+            password: '',
+          };
+
+          this.fillForm(this.user!);
+        }
+      });
+  }
+
+  private fillForm(user: User) {
+    this.form.get('nroDocumento')?.setValue(user.nroDocumento);
+    this.form.get('nombre')?.setValue(user.nombre);
+    this.form.get('apellido')?.setValue(user.apellido);
+    this.form.get('email')?.setValue(user.email);
+    this.form.get('fechaNacimiento')?.setValue(user.fechaNacimiento);
+    this.form.get('fechaIngreso')?.setValue(user.fechaIngreso);
+
+    // if (this.isDetail) {
+    //   this.form.disable();
+    // }
+  }
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 
@@ -113,8 +157,13 @@ export class UserComponent implements OnInit {
       this.selectedFileName = file.name;
 
       const reader = new FileReader();
+
       reader.onload = () => {
-        this.selectedFileUrl = reader.result as string;
+        const result = reader.result as string;
+        this.selectedFileUrl = result;
+        this.base64Image = result.split(',')[1];
+
+        console.log('Base64:', this.base64Image);
       };
       reader.readAsDataURL(file);
     }

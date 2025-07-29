@@ -51,3 +51,31 @@ body {
   color: black;
   font-size: 16px;
 }
+
+.btns {
+  margin: 15px auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}
+
+.btn-primary {
+  background-color: var(--primary-button-bg) !important;
+  color: white !important;
+  width: 100px;
+  font-size: 17px;
+  padding: 4px 9px;
+}
+
+.btn-secondary {
+  width: 100px;
+  background-color: var(--secondary-button-bg) !important;
+  color: white !important;
+  width: 100px;
+  font-size: 17px;
+  padding: 4px 9px;
+}
+
+.btns button {
+  margin: 0 10px;
+}
