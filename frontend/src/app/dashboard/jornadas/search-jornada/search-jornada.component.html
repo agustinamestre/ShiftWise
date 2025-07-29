@@ -57,7 +57,9 @@
             mat-mini-fab
             class="nueva-button"
             title="Nueva Jornada"
-            type="button">
+            type="button"
+            [routerLink]="['/' + appRoutes.NEW_JORNADA]"
+            >
             <mat-icon>add</mat-icon>
           </button>
         </div>
@@ -122,7 +124,7 @@
 </div>
 
 <div class="btns">
-  <button mat-stroked-button class="btnVolver">
+  <button mat-button class="btnVolver">
     Volver
   </button>
 </div>

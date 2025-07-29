@@ -1,7 +1,8 @@
 .page-content {
   padding: 20px;
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
+
 }
 
 .page-title {
@@ -28,17 +29,17 @@
   align-items: center;
   justify-content: center;
   flex-wrap: nowrap;
-  padding: 20px;
+  padding: 20px 20px 0 20px;
   flex-direction: row;
   overflow-x: auto;
+
 }
 
 .doc-input,
 .date-input {
-  flex: 1 1 0;
-  min-width: 280px;
-  max-width: 350px;
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 180px;
+  max-width: 300px;
 }
 
 .doc-input input,
@@ -54,6 +55,7 @@
 
 .search-button {
   margin-bottom: 8px;
+  margin-left: 30px;
   background-color: #0c2a55 !important;
   border: none;
   display: flex;
@@ -72,12 +74,10 @@
 
 /* ------------------------------------------------------------------- */
 
-/* Sección de contenido */
 .contenido {
   padding: 16px;
 }
 
-/* Contenedor del botón Nueva */
 .container-titulo-btnCrear {
   display: flex;
   justify-content: flex-end;
@@ -86,13 +86,9 @@
 
 .nueva-button{
   background-color: var(--primary-button-bg);
-}
-
-.nueva-button mat-icon {
   color: white;
 }
 
-/* Mensaje sin resultados */
 .no-results-message {
   padding: 40px 20px;
   text-align: center;
@@ -141,25 +137,6 @@
 
 .jornadas-table tr:hover {
   background-color: #f9f9f9;
-}
-
-/* Botones de navegación */
-.btns {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-  padding: 20px;
-}
-
-.btnVolver {
-  padding: 8px 24px;
-  font-weight: 500;
-  color: #1976d2;
-  border-color: #1976d2;
-}
-
-.btnVolver:hover {
-  background-color: rgba(25, 118, 210, 0.04);
 }
 
 /* Responsive */
