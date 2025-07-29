@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  max-height: 470px;
+  margin: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.page-content {
+  padding: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.page-title {
+  text-align: center;
+  color: var(--color-principal);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+mat-label {
+  font-size: 16px;
+}
