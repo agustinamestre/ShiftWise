@@ -35,10 +35,10 @@ public class JWTTokenProvider {
 
     public String generateJwtToken(User usuario){
 
-        String perfil = usuario.getPerfil().getNombre();
+        String perfil = usuario.getPerfil().getNombre().name();
 
         List<String> authorities = usuario.getPerfil().getPermisos().stream()
-                .map(Permiso::getNombre)
+                .map(Permiso::getCodigo)
                 .toList();
 
         return TOKEN_PREFIX + JWT.create()

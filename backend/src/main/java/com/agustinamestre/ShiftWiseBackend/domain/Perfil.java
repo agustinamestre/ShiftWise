@@ -22,17 +22,12 @@ public class Perfil {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPerfil;
-    private String nombre;
+    @Enumerated(EnumType.STRING)
+    private NombrePerfil nombre;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             joinColumns = @JoinColumn(name = "id_perfil"),
             inverseJoinColumns = @JoinColumn(name = "id_permiso")
     )
     private Set<Permiso> permisos;
-
-
-    @Override
-    public String toString() {
-        return nombre;
-    }
 }

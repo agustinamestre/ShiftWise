@@ -12,6 +12,7 @@ public class ShiftWiseErrors {
     public static final ApiError EMAIL_EXISTENTE = new ApiError("EmailExistente","Ya existe un usuario con el email ingresado.");
     public static final ApiError USER_NOT_FOUND = new ApiError("UsuarioNoEncontrado","No se encontró el usuario indicado.");
     public static final ApiError CONCEPTO_NOT_FOUND = new ApiError("ConceptoNoEncontrado","No se encontró el concepto indicado.");
+    public static final ApiError PERFIL_NOT_FOUND = new ApiError("PerfilNoEncontrado","Perfil no encontrado");
 
     public static final ApiError HS_TRABAJADAS_REQUERIDAS = new ApiError("HorasTrabajadasObligatorias","Las horas trabajadas son obligatorias para el concepto ingresado.");
     public static final ApiError HS_TRABAJADAS_NO_REQUERIDAS = new ApiError("HorasTrabajadasNoRequeridas","El concepto ingresado no requiere el ingreso de horas trabajadas.");
