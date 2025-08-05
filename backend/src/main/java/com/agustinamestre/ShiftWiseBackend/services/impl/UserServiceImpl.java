@@ -2,13 +2,17 @@ package com.agustinamestre.ShiftWiseBackend.services.impl;
 
 import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserRequest;
 import com.agustinamestre.ShiftWiseBackend.controllers.responses.UserDTO;
+import com.agustinamestre.ShiftWiseBackend.domain.NombrePerfil;
+import com.agustinamestre.ShiftWiseBackend.domain.Perfil;
 import com.agustinamestre.ShiftWiseBackend.domain.User;
 import com.agustinamestre.ShiftWiseBackend.exceptions.BusinessException;
 import com.agustinamestre.ShiftWiseBackend.exceptions.ResourceNotFoundException;
 import com.agustinamestre.ShiftWiseBackend.exceptions.UnauthorizedException;
 import com.agustinamestre.ShiftWiseBackend.models.error.ShiftWiseErrors;
+import com.agustinamestre.ShiftWiseBackend.repositories.PerfilRepository;
 import com.agustinamestre.ShiftWiseBackend.repositories.UserRepository;
 import com.agustinamestre.ShiftWiseBackend.services.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
@@ -19,28 +23,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
+
     UserRepository userRepository;
+    PerfilRepository perfilRepository;
     PasswordEncoder passwordEncoder;
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PerfilRepository perfilRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.perfilRepository = perfilRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserDTO crearUser(UserRequest request) {
 
-        var user = User.mapFromUserRequest(request);
+        Perfil perfilEmpleado = perfilRepository.findByNombre(NombrePerfil.EMPLEADO)
+                .orElseThrow(() -> new BusinessException(ShiftWiseErrors.PERFIL_NOT_FOUND));
+
+        User user = User.mapFromUserRequest(request, perfilEmpleado);
 
         try {
             userRepository.save(user);
