@@ -14,7 +14,8 @@ import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter @Setter @Builder
-@Entity(name = "users")
+@Entity
+@Table(name = "users")
 @AllArgsConstructor @NoArgsConstructor
 public class User {
 
@@ -43,6 +44,7 @@ public class User {
     LocalDate fechaCreacion = LocalDate.now();
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     String fotoBase64;
 
     @Column(nullable = false)
@@ -55,9 +57,7 @@ public class User {
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
     private List<Jornada> jornadas = new ArrayList<>();
 
-
-
-    public static User mapFromUserRequest(UserRequest request) {
+    public static User mapFromUserRequest(UserRequest request, Perfil perfil) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
         return User.builder()
@@ -71,6 +71,7 @@ public class User {
                 .fechaIngreso(request.getFechaIngreso())
                 .fotoBase64(request.getFotoBase64())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .perfil(perfil)
                 .build();
     }
 }
