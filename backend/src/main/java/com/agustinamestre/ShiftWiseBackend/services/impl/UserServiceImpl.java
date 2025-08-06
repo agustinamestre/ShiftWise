@@ -12,19 +12,17 @@ import com.agustinamestre.ShiftWiseBackend.models.error.ShiftWiseErrors;
 import com.agustinamestre.ShiftWiseBackend.repositories.PerfilRepository;
 import com.agustinamestre.ShiftWiseBackend.repositories.UserRepository;
 import com.agustinamestre.ShiftWiseBackend.services.UserService;
+import com.agustinamestre.ShiftWiseBackend.shared.mappers.UserMapper;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static java.util.Objects.requireNonNull;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
@@ -35,7 +33,6 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     PerfilRepository perfilRepository;
     PasswordEncoder passwordEncoder;
-    ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PerfilRepository perfilRepository, PasswordEncoder passwordEncoder) {
@@ -50,31 +47,34 @@ public class UserServiceImpl implements UserService {
         Perfil perfilEmpleado = perfilRepository.findByNombre(NombrePerfil.EMPLEADO)
                 .orElseThrow(() -> new BusinessException(ShiftWiseErrors.PERFIL_NOT_FOUND));
 
-        User user = User.mapFromUserRequest(request, perfilEmpleado);
+        User user = UserMapper.mapFromUserRequest(request, perfilEmpleado);
 
-        try {
-            userRepository.save(user);
-        } catch (DataIntegrityViolationException e) {
-            validarDuplicidadUser(e);
-        }
+        validarDuplicidadUser(request.getEmail(), request.getNroDocumento());
 
-        return UserDTO.mapFromUser(user);
+        userRepository.save(user);
+
+        return UserMapper.mapFromUser(user);
     }
 
-    private void validarDuplicidadUser(DataIntegrityViolationException e) {
-        String rootCauseMessage = requireNonNull(e.getRootCause()).getLocalizedMessage();
+    @Override
+    public UserDTO editarUser(String id, UserRequest request) {
 
-        if (rootCauseMessage.contains("nro_documento")) {
-            throw new BusinessException(ShiftWiseErrors.DOCUMENTO_EXISTENTE);
-        } else if (rootCauseMessage.contains("email")) {
-            throw new BusinessException(ShiftWiseErrors.EMAIL_EXISTENTE);
-        }
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.USER_NOT_FOUND));
+
+        validarDuplicidadUser(request.getEmail(), request.getNroDocumento());
+
+        UserMapper.updateEntityFromRequest(user, request);
+
+        userRepository.save(user);
+
+        return UserMapper.mapFromUser(user);
     }
 
     @Override
     public List<UserDTO> obtenerUsers() {
         return userRepository.findAll().stream()
-                .map(UserDTO::mapFromUser)
+                .map(UserMapper::mapFromUser)
                 .toList();
     }
 
@@ -83,28 +83,7 @@ public class UserServiceImpl implements UserService {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.USER_NOT_FOUND));
 
-        return UserDTO.mapFromUser(user);
-    }
-
-    @Override
-    public UserDTO editarUser(String id, UserRequest request) {
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.USER_NOT_FOUND));
-
-        user.setNroDocumento(request.getNroDocumento());
-        user.setNombre(request.getNombre());
-        user.setApellido(request.getApellido());
-        user.setEmail(request.getEmail());
-        user.setFechaNacimiento(request.getFechaNacimiento());
-        user.setFechaIngreso(request.getFechaIngreso());
-
-        try {
-            userRepository.save(user);
-        } catch (DataIntegrityViolationException e) {
-            validarDuplicidadUser(e);
-        }
-
-        return UserDTO.mapFromUser(user);
+        return UserMapper.mapFromUser(user);
     }
 
     @Override
@@ -125,5 +104,15 @@ public class UserServiceImpl implements UserService {
         }
 
         return usuario;
+    }
+
+    private void validarDuplicidadUser(String email, String nroDocumento) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new BusinessException(ShiftWiseErrors.EMAIL_EXISTENTE);
+        }
+
+        if (userRepository.findByNroDocumento(nroDocumento).isPresent()) {
+            throw new BusinessException(ShiftWiseErrors.DOCUMENTO_EXISTENTE);
+        }
     }
 }

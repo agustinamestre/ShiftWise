@@ -4,10 +4,10 @@ import com.agustinamestre.ShiftWiseBackend.shared.validators.BaseValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.Objects.isNull;
 
 public class EmailValidator extends BaseValidator implements ConstraintValidator<Email, String> {
 
@@ -17,7 +17,7 @@ public class EmailValidator extends BaseValidator implements ConstraintValidator
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
 
-        if(isNull(email)){
+        if(isBlank(email)){
             changeDefaultMessage(context, "El email es requerido.");
             return false;
         }
