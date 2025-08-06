@@ -1,7 +1,6 @@
 package com.agustinamestre.ShiftWiseBackend.controllers.responses;
 
 
-import com.agustinamestre.ShiftWiseBackend.domain.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,15 +21,4 @@ public class UserDTO implements Serializable {
     LocalDate fechaIngreso;
     String foto;
 
-    public static UserDTO mapFromUser(User user){
-       return UserDTO.builder()
-                .nroDocumento(user.getNroDocumento())
-                .nombre(user.getNombre())
-                .apellido(user.getApellido())
-                .email(user.getEmail())
-                .fechaNacimiento(user.getFechaNacimiento())
-                .fechaIngreso(user.getFechaIngreso())
-                .foto(user.getFotoBase64())
-                .build();
-    }
 }
