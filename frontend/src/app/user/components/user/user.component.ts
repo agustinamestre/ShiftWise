@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { mapBackendErrorToErrorResponse } from '../../../models/error-utils';
 import { UserResponse } from '../../interfaces/UserResponse';
+import ErrorResponse from '../../../models/ErrorResponse';
 
 @Component({
   selector: 'app-user',
@@ -108,8 +109,19 @@ export class UserComponent implements OnInit {
       this.userService.createUser(user).subscribe({
         next: (response) => {
           this.toastr.success('Empleado creado exitosamente!');
+          this.volver();
         },
-        error: (err: HttpErrorResponse) => {
+        error: (error: ErrorResponse) => {
+          this.handleError(error);
+        },
+      });
+    } else if (this.isEdition) {
+      this.userService.updateUser(this.userId, user).subscribe({
+        next: () => {
+          this.toastr.success('Empleado actualizado exitosamente!');
+          this.volver();
+        },
+        error: (err: ErrorResponse) => {
           this.handleError(err);
         },
       });
@@ -169,13 +181,10 @@ export class UserComponent implements OnInit {
     }
   }
 
-  handleError(error: HttpErrorResponse) {
-    if (error.error && error.error.error) {
-      const adaptedError = mapBackendErrorToErrorResponse(
-        error.error,
-        error.status
-      );
-      this.toastr.error(adaptedError.genericErrorMessage);
+  handleError(error: ErrorResponse) {
+    console.log('ErrorResponse:', error);
+    if (error.genericErrorMessage) {
+      this.toastr.error(error.genericErrorMessage);
     } else {
       this.toastr.error('Ocurrió un error inesperado.');
     }
@@ -199,5 +208,9 @@ export class UserComponent implements OnInit {
     ) {
       e.preventDefault();
     }
+  }
+
+  volver() {
+    this.location.back();
   }
 }
