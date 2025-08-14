@@ -4,6 +4,7 @@ import com.agustinamestre.ShiftWiseBackend.shared.validators.adulto.Adulto;
 import com.agustinamestre.ShiftWiseBackend.shared.validators.documento.Documento;
 import com.agustinamestre.ShiftWiseBackend.shared.validators.email.Email;
 import com.agustinamestre.ShiftWiseBackend.shared.validators.fechaIngreso.FechaIngreso;
+import com.agustinamestre.ShiftWiseBackend.shared.validators.password.Password;
 import com.agustinamestre.ShiftWiseBackend.shared.validators.texto.TextoValido;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
@@ -40,6 +41,6 @@ public class UserRequest implements Serializable {
 
     String fotoBase64;
 
-    @NotBlank(message = "La contraseña es requerida.")
+    @Password
     String password;
 }
