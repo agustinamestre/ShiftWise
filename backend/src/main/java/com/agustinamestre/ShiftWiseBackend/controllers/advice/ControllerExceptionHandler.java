@@ -18,6 +18,7 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Objects;
 
 import static com.agustinamestre.ShiftWiseBackend.models.error.ShiftWiseErrors.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -30,8 +31,6 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = INTERNAL_SERVER_ERROR)
     public ApiErrorResponse globalExceptionHandler(Exception ex, ServletWebRequest request) {
-        log.error("**** HUBO EN ERROR TECNICO - EXCEPTION****");
-        log.error("**** Con la descripcion: {}", ex.getMessage());
         ApiError apiError = new ApiError(CODE_ERROR_TECNICO, getGenericErrorMessageAndCause(ex), ex.getMessage());
         return ApiErrorResponse.crearResponseConError(request.getRequest().getRequestURI(), apiError);
     }
@@ -39,8 +38,6 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiErrorResponse runtimeExceptionHandler(RuntimeException ex, ServletWebRequest request) {
-        log.error("**** HUBO EN ERROR TECNICO - RUNTIME ****");
-        log.error("**** Con la descripcion: {}", ex.getMessage());
         var apiError = new ApiError(CODE_ERROR_TECNICO, getGenericErrorMessageAndCause(ex), ex.getMessage());
         return ApiErrorResponse.crearResponseConError(request.getRequest().getRequestURI(), apiError);
     }
@@ -54,9 +51,11 @@ public class ControllerExceptionHandler {
         var errors = ex.getAllErrors().stream()
                 .map(error -> {
                     if (error instanceof DefaultMessageSourceResolvable resolvable) {
-                        final String field = ((DefaultMessageSourceResolvable) resolvable.getArguments()[0]).getDefaultMessage();
-                        return new ApiError(field + "_invalido",
-                                MessageFormat.format(CAMPO_CON_VALOR_INVALIDO, field, error.getDefaultMessage()));
+                        final String field = ((DefaultMessageSourceResolvable) Objects.requireNonNull(resolvable.getArguments())[0]).getDefaultMessage();
+                        return new ApiError(
+                                field + "_invalido",
+                                error.getDefaultMessage()
+                        );
                     } else {
                         return new ApiError("ErrorTecnico", error.getDefaultMessage());
                     }
@@ -83,7 +82,7 @@ public class ControllerExceptionHandler {
                             return new ApiError(field + "_requerido", MessageFormat.format(CAMPO_REQUERIDO, field));
                         } else {
                             // Custom annotation u otras
-                            return new ApiError(field + "_invalido", MessageFormat.format(CAMPO_CON_VALOR_INVALIDO, field, error.getDefaultMessage()));
+                            return new ApiError(field + "_invalido", error.getDefaultMessage());
                         }
                     } else {
                         // ViolationObjectError para las validaciones de @Notation que son a nivel clase.
