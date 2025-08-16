@@ -11,6 +11,17 @@
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label for="documento">Número de Documento</mat-label>
                     <input matInput formControlName="documento" type="text">
+
+                    @if (documento?.invalid && documento?.touched) {
+                      <mat-error>
+                        @if (documento?.errors?.['required']) {
+                        El número de documento es requerido
+                        }
+                        @if (documento?.errors?.['minlength']) {
+                        El número de documento debe tener al menos 8 caracteres
+                        }
+                      </mat-error>
+                    }
                 </mat-form-field>
 
                 <!-- Contraseña -->
@@ -30,7 +41,7 @@
                     La contraseña es requerida
                     }
                     @if (password?.errors?.['minlength']) {
-                    La contraseña debe tener al menos 6 caracteres
+                    La contraseña debe tener al menos 8 caracteres
                     }
                   </mat-error>
                   }

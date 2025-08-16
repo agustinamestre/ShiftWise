@@ -6,6 +6,8 @@ import AppRoutes from '../../../common/routes';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../interfaces/LoginRequest';
+import { ToastrService } from 'ngx-toastr';
+import ErrorResponse from '../../../models/ErrorResponse';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +21,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private toastr = inject(ToastrService);
 
   appRoutes = AppRoutes;
 
@@ -38,16 +41,33 @@ export class LoginComponent {
       const credentials: LoginRequest = {
         nroDocumento: this.loginForm.get('documento')?.value,
         password: this.loginForm.get('password')?.value,
+        recordar: this.loginForm.get('recordar')?.value,
       };
 
-      this.authService.login(credentials).subscribe({
-        next: (response) => {
-          console.log('Login exitoso:', response);
-          this.isLoading.set(false);
+      console.log(credentials);
 
+      this.authService.login(credentials).subscribe({
+        next: () => {
+          this.toastr.success('¡Inicio de sesión exitoso!');
+          this.isLoading.set(false);
           this.router.navigate(['/']);
         },
+        error: (error: ErrorResponse) => {
+          this.isLoading.set(false);
+          this.handleError(error);
+        },
       });
+    }
+  }
+
+  handleError(error: ErrorResponse) {
+    console.log('ErrorResponse:', error);
+    if (error.genericErrorMessage) {
+      this.toastr.error(error.genericErrorMessage);
+    } else {
+      this.toastr.error(
+        'Ocurrió un error al iniciar sesión. Verifica tus credenciales.'
+      );
     }
   }
 
