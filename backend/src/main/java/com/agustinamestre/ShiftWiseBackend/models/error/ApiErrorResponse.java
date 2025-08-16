@@ -1,6 +1,7 @@
 package com.agustinamestre.ShiftWiseBackend.models.error;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalDateTime;
@@ -18,19 +19,10 @@ public class ApiErrorResponse {
 
     private List<ApiError> error;
 
-    private int errorCode;
-
-    private String description;
-
     public ApiErrorResponse(String uri, LocalDateTime timestamp, List<ApiError> error) {
         this.uri = uri;
         this.timestamp = timestamp;
         this.error = error;
-    }
-
-    public ApiErrorResponse(int errorCode, String description) {
-        this.errorCode = errorCode;
-        this.description = description;
     }
 
     public static ApiErrorResponse crearResponseConError(String uri, ApiError error) {
