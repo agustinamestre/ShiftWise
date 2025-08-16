@@ -13,8 +13,6 @@ import User from '../../interfaces/User';
 import { UserService } from '../../services/user.service';
 import { CommonModule, Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { HttpErrorResponse } from '@angular/common/http';
-import { mapBackendErrorToErrorResponse } from '../../../models/error-utils';
 import { UserResponse } from '../../interfaces/UserResponse';
 import ErrorResponse from '../../../models/ErrorResponse';
 
@@ -76,14 +74,19 @@ export class UserComponent implements OnInit {
       email: [this.user?.email ?? '', [Validators.required, Validators.email]],
       fechaNacimiento: [this.user?.fechaNacimiento ?? '', Validators.required],
       fechaIngreso: [this.user?.fechaIngreso ?? '', Validators.required],
-      password: ['', Validators.required],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
+        ],
+      ],
       foto: [''],
     });
   }
 
   onSubmit() {
-    console.log('Formulario enviado', this.form.value);
-
     if (this.form.invalid) {
       return;
     }
