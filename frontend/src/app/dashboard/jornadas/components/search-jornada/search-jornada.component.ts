@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MaterialModule } from '../../../material/material.module';
+import { MaterialModule } from '../../../../material/material.module';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import Jornada from '../interface/Jornada';
+import Jornada from '../../interface/Jornada';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import AppRoutes from '../../../common/routes';
+import AppRoutes from '../../../../common/routes';
 
 @Component({
   selector: 'app-search-jornada',
