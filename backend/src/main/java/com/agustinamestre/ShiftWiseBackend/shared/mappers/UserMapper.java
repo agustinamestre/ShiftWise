@@ -21,6 +21,7 @@ public class UserMapper {
 
     public static UserDTO mapFromUser(User user){
         return UserDTO.builder()
+                .id(user.getId())
                 .nroDocumento(user.getNroDocumento())
                 .nombre(user.getNombre())
                 .apellido(user.getApellido())
