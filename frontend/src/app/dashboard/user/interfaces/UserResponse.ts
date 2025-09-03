@@ -1,4 +1,5 @@
 export type UserResponse = {
+  id: string;
   nroDocumento: string;
   nombre: string;
   apellido: string;
