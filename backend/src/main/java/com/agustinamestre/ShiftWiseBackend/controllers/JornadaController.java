@@ -33,8 +33,8 @@ public class JornadaController {
     public List<JornadaDTO> obtenerJornadas(
             @RequestParam(required = false) String nroDocumento,
             @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate fecha){
-        return jornadaService.obtenerJornadas(nroDocumento, fecha);
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            @RequestParam(required = false) String apellido){
+        return jornadaService.obtenerJornadas(nroDocumento, fecha, apellido);
     }
 }

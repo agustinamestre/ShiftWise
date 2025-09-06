@@ -10,5 +10,5 @@ public interface JornadaService {
 
     JornadaDTO crearJornada(JornadaRequest request);
 
-    List<JornadaDTO> obtenerJornadas(String nroDocumento,   LocalDate fecha);
+    List<JornadaDTO> obtenerJornadas(String nroDocumento, LocalDate fecha, String apellido);
 }
