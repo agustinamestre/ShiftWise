@@ -66,9 +66,9 @@ public class JornadaServiceImpl implements JornadaService {
     }
 
     @Override
-    public List<JornadaDTO> obtenerJornadas(String nroDocumento, LocalDate fecha) {
+    public List<JornadaDTO> obtenerJornadas(String nroDocumento, LocalDate fecha, String apellido) {
 
-        return jornadaRepository.obtenerJornadas(nroDocumento, fecha)
+        return jornadaRepository.obtenerJornadas(nroDocumento, fecha, apellido)
                 .stream()
                 .flatMap(jornada -> jornada.getConceptos()
                         .stream()

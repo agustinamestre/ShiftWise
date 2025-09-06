@@ -3,11 +3,11 @@
 
   <div class="container">
     <h1 class="container-heading"></h1>
-    <form class="form" [formGroup]="form">
+    <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <mat-form-field class="form-field" appearance="outline">
         <mat-label>Usuario</mat-label>
         <mat-select formControlName="idUser">
-          <mat-option *ngFor="let user of users">
+          <mat-option *ngFor="let user of users" [value]="user.id">
             {{ user.nombre }} {{ user.apellido }}
           </mat-option>
         </mat-select>
@@ -37,12 +37,8 @@
   </div>
 
   <div class="btns">
-    <button mat-button class="btn-volver">Volver</button>
-    <button mat-button class="btn-secondary" type="button">
-      Cancelar
-    </button>
-    <button mat-button class="btn-primary" [disabled]="!form.valid">
-      Guardar
-    </button>
+    <button mat-button class="btn-volver" type="button" (click)="volver()">Volver</button>
+    <button mat-button class="btn-secondary" type="button" type="button" (click)="onCancel()">Cancelar</button>
+    <button mat-button class="btn-primary" [disabled]="!form.valid" type="submit" (click)="onSubmit()">Guardar</button>
   </div>
 </div>
