@@ -6,36 +6,28 @@
       <mat-card-content>
         <form [formGroup]="form" class="search-form">
 
+          <!-- Campo apellido -->
+          <mat-form-field appearance="outline" class="doc-input">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="apellido" placeholder="Ingresa apellido" type="text" />
+          </mat-form-field>
+
           <!-- Campo de documento -->
           <mat-form-field appearance="outline" class="doc-input">
             <mat-label>Número de Documento</mat-label>
-            <input
-              matInput
-              formControlName="nroDocumento"
-              placeholder="Ingresa el documento"
-              type="number"
-            />
+            <input matInput formControlName="nroDocumento" placeholder="Ingresa el documento" type="text" />
           </mat-form-field>
 
           <!-- Campo de fecha -->
           <mat-form-field appearance="outline" class="date-input">
             <mat-label>Fecha</mat-label>
-            <input
-              matInput
-              formControlName="fecha"
-              [matDatepicker]="picker1"
-              placeholder="Ingresa la fecha"
-            />
+            <input matInput formControlName="fecha" [matDatepicker]="picker1" placeholder="Ingresa la fecha" />
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
           </mat-form-field>
 
           <!-- Botón de búsqueda -->
-          <button
-            mat-mini-fab
-            class="search-button"
-            title="Buscar"
-            type="submit">
+          <button mat-mini-fab class="search-button" title="Buscar" type="submit" (click)="search()">
 
             <mat-icon>search</mat-icon>
           </button>
@@ -53,13 +45,8 @@
 
         <!-- Botón Nueva Jornada -->
         <div class="container-titulo-btnCrear">
-          <button
-            mat-mini-fab
-            class="nueva-button"
-            title="Nueva Jornada"
-            type="button"
-            [routerLink]="['/' + appRoutes.NEW_JORNADA]"
-            >
+          <button mat-mini-fab class="nueva-button" title="Nueva Jornada" type="button"
+            [routerLink]="['/' + appRoutes.NEW_JORNADA]">
             <mat-icon>add</mat-icon>
           </button>
         </div>
@@ -71,51 +58,66 @@
 
         <!-- Tabla de resultados -->
         <div *ngIf="jornadas.length > 0" class="table-container">
-          <table mat-table class="jornadas-table">
+          <table mat-table class="jornadas-table"  [dataSource]="jornadas">
 
             <!-- Columna Número de Documento -->
             <ng-container matColumnDef="nroDocumento">
-              <th mat-header-cell >Nro. Documento</th>
-              <td mat-cell>
-                <!-- {{ element.nroDocumento }} -->
+              <th mat-header-cell *matHeaderCellDef>Nro. documento</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.nroDocumento }}
               </td>
             </ng-container>
 
             <!-- Columna Nombre y Apellido -->
             <ng-container matColumnDef="nombreCompleto">
-              <th mat-header-cell >Nombre y Apellido</th>
-              <td mat-cell >
-                <!-- {{ element.nombreCompleto }} -->
+              <th mat-header-cell *matHeaderCellDef>Nombre y Apellido</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.nombreCompleto }}
               </td>
             </ng-container>
 
             <!-- Columna Turno -->
             <ng-container matColumnDef="concepto">
-              <th mat-header-cell >Turno</th>
-              <td mat-cell >
-                <!-- {{ element.concepto }} -->
+              <th mat-header-cell *matHeaderCellDef>Turno</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.concepto }}
               </td>
             </ng-container>
 
             <!-- Columna Fecha -->
             <ng-container matColumnDef="fecha">
-              <th mat-header-cell >Fecha</th>
-              <td mat-cell >
-                <!-- {{ element.fecha | date:'dd/MM/yyyy' }} -->
+              <th mat-header-cell *matHeaderCellDef>Fecha</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.fecha | date:'dd/MM/yyyy' }}
               </td>
             </ng-container>
 
             <!-- Columna Horas Trabajadas -->
             <ng-container matColumnDef="horasTrabajadas">
-              <th mat-header-cell >Horas</th>
-              <td mat-cell >
-                <!-- {{ element.horasTrabajadas ?? '-' }} -->
+              <th mat-header-cell *matHeaderCellDef>Horas</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.horasTrabajadas ?? '-' }}
               </td>
             </ng-container>
 
             <!-- Definición de filas -->
-            <tr mat-header-row ></tr>
-            <tr mat-row ></tr>
+          <tr mat-header-row *matHeaderRowDef="[
+                        'nroDocumento',
+                        'nombreCompleto',
+                        'concepto',
+                        'fecha',
+                        'horasTrabajadas'
+                      ]"></tr>
+          <tr mat-row *matRowDef="
+                        let element;
+                        columns: [
+                          'nroDocumento',
+                          'nombreCompleto',
+                          'concepto',
+                          'fecha',
+                          'horasTrabajadas'
+                        ]
+                      "></tr>
           </table>
         </div>
       </mat-card-content>
@@ -124,7 +126,7 @@
 </div>
 
 <div class="btns">
-  <button mat-button class="btnVolver">
+  <button mat-button class="btnVolver" (click)="volver()">
     Volver
   </button>
 </div>
