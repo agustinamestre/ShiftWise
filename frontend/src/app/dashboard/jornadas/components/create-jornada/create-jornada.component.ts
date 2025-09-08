@@ -13,6 +13,7 @@ import { UserResponse } from '../../../user/interfaces/UserResponse';
 import { JornadaService } from '../../services/jornada.service';
 import { JornadaRequest } from '../../interface/JornadaRequest';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import ErrorResponse from '../../../../models/ErrorResponse';
 
 @Component({
   selector: 'app-create-jornada',
@@ -34,14 +35,33 @@ export class CreateJornadaComponent implements OnInit {
   concepts: Array<Concept> = [];
   users: Array<User> = [];
 
+  isAnyFilterEntered = false;
+
   constructor(private location: Location) {
     const path = this.location.path();
   }
 
   ngOnInit(): void {
+    this.initForm();
     this.getConcepts();
     this.getUsers();
 
+    this.form.valueChanges.subscribe((v) => {
+      this.isAnyFilterEntered = Object.values(this.form.value).some((v) => !!v);
+    });
+
+    this.form.get('idConcepto')!.valueChanges.subscribe((conceptId) => {
+      if (conceptId === 3) {
+        this.form.get('horasTrabajadas')?.reset();
+        this.form.get('horasTrabajadas')?.setValue(undefined);
+        this.form.get('horasTrabajadas')?.disable();
+      } else {
+        this.form.get('horasTrabajadas')?.enable();
+      }
+    });
+  }
+
+  initForm() {
     this.form = new FormGroup({
       idUser: new FormControl('', [Validators.required]),
       idConcepto: new FormControl('', [Validators.required]),
@@ -111,15 +131,20 @@ export class CreateJornadaComponent implements OnInit {
           this.toastr.success('Jornada creada exitosamente');
           this.router.navigate(['/jornadas']);
         },
-        error: (err) => {
-          this.toastr.error(
-            'Error al crear la jornada: ' +
-              (err.error?.genericErrorMessage || err.message)
-          );
+        error: (error: ErrorResponse) => {
+          this.handleError(error);
         },
       });
     } else {
       this.toastr.error('Por favor, completa todos los campos requeridos.');
+    }
+  }
+
+  handleError(error: ErrorResponse) {
+    if (error.genericErrorMessage) {
+      this.toastr.error(error.genericErrorMessage);
+    } else {
+      this.toastr.error('Ocurrió un error inesperado.');
     }
   }
 

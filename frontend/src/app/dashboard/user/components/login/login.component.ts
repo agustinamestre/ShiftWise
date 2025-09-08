@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
-import { MaterialModule } from '../../../material/material.module';
 import { Router, RouterModule } from '@angular/router';
-import AppRoutes from '../../../common/routes';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../interfaces/LoginRequest';
 import { ToastrService } from 'ngx-toastr';
-import ErrorResponse from '../../../models/ErrorResponse';
+import { MaterialModule } from '../../../../material/material.module';
+import AppRoutes from '../../../../common/routes';
+import ErrorResponse from '../../../../models/ErrorResponse';
 
 @Component({
   selector: 'app-login',
