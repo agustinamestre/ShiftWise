@@ -3,8 +3,8 @@ import { Injectable } from "@angular/core";
 import UserRequest from "../interfaces/UserRequest";
 import { catchError, Observable, throwError } from "rxjs";
 import { UserResponse } from "../interfaces/UserResponse";
-import { environment } from "../../../environments/environment";
-import ErrorResponse from "../../models/ErrorResponse";
+import { environment } from "../../../../environments/environment";
+import ErrorResponse from "../../../models/ErrorResponse";
 
 @Injectable({
   providedIn: 'root',

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MaterialModule } from '../../../material/material.module';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   FormBuilder,
@@ -14,7 +13,8 @@ import { UserService } from '../../services/user.service';
 import { CommonModule, Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { UserResponse } from '../../interfaces/UserResponse';
-import ErrorResponse from '../../../models/ErrorResponse';
+import { MaterialModule } from '../../../../material/material.module';
+import ErrorResponse from '../../../../models/ErrorResponse';
 
 @Component({
   selector: 'app-user',
@@ -137,6 +137,7 @@ export class UserComponent implements OnInit {
       .subscribe((userData: UserResponse) => {
         if (userData) {
           this.user = {
+            id: userData.id,
             nroDocumento: userData.nroDocumento,
             nombre: userData.nombre,
             apellido: userData.apellido,
