@@ -20,7 +20,7 @@ public class CorsFilterConfig {
         config.setAllowedOrigins(List.of("http://localhost:4200")); // Origen permitido
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
         config.setAllowedHeaders(List.of("*")); // Permitir todos los headers
-        config.setExposedHeaders(List.of("Jwt-Token", "X-OTP-Time-Expires")); // Headers expuestos
+        config.setExposedHeaders(List.of("X-Auth-Token", "X-OTP-Time-Expires")); // Headers expuestos
         config.setAllowCredentials(true); // Permitir credenciales
 
         source.registerCorsConfiguration("/**", config);
