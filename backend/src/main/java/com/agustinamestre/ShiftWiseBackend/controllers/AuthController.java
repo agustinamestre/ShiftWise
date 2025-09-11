@@ -51,4 +51,10 @@ public class AuthController {
                 .header("X-Auth-Token", jwtToken)
                 .build();
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        return ResponseEntity.noContent().build();
+    }
+
 }
