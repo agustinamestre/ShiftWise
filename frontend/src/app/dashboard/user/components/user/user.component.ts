@@ -24,7 +24,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
 })
-export class UserComponent implements OnInit {
+export class UserComponent {
   form!: FormGroup;
   user: User | null = null;
   today: Date = new Date();
@@ -56,15 +56,13 @@ export class UserComponent implements OnInit {
     if (path.includes('new')) {
       this.isNew = true;
       this.title = 'Registrarse';
+      this.buildForm();
     } else if (path.includes('edit')) {
-      this.getUser();
       this.isEdition = true;
       this.title = 'Editar Usuario';
+      this.buildForm();
+      this.getUser();
     }
-  }
-
-  ngOnInit(): void {
-    this.buildForm();
   }
 
   private buildForm() {
@@ -80,11 +78,13 @@ export class UserComponent implements OnInit {
       fechaIngreso: [this.user?.fechaIngreso ?? '', Validators.required],
       password: [
         '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
-        ],
+        this.isNew
+          ? [
+              Validators.required,
+              Validators.minLength(8),
+              Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
+            ]
+          : [],
       ],
       foto: [''],
     });
@@ -100,14 +100,8 @@ export class UserComponent implements OnInit {
       apellido: this.form.get('apellido')?.value,
       nroDocumento: this.form.get('nroDocumento')?.value,
       email: this.form.get('email')?.value,
-      fechaNacimiento: this.form
-        .get('fechaNacimiento')
-        ?.value.toISOString()
-        .split('T')[0],
-      fechaIngreso: this.form
-        .get('fechaIngreso')
-        ?.value.toISOString()
-        .split('T')[0],
+      fechaNacimiento: this.form.get('fechaNacimiento')?.value,
+      fechaIngreso: this.form.get('fechaIngreso')?.value,
       fotoBase64: this.base64Image,
       password: this.form.get('password')?.value,
     };

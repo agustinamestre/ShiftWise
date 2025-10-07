@@ -1,6 +1,7 @@
 package com.agustinamestre.ShiftWiseBackend.shared.mappers;
 
-import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserRequest;
+import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserCreateRequest;
+import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserUpdateRequest;
 import com.agustinamestre.ShiftWiseBackend.controllers.responses.UserDTO;
 import com.agustinamestre.ShiftWiseBackend.domain.Perfil;
 import com.agustinamestre.ShiftWiseBackend.domain.User;
@@ -9,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserMapper {
 
-    public static void updateEntityFromRequest(User user, UserRequest request) {
+    public static void updateEntityFromRequest(User user, UserUpdateRequest request) {
         user.setNroDocumento(request.getNroDocumento());
         user.setNombre(request.getNombre());
         user.setApellido(request.getApellido());
@@ -32,7 +33,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static User mapFromUserRequest(UserRequest request, Perfil perfil) {
+    public static User mapFromUserRequest(UserCreateRequest request, Perfil perfil) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
         return User.builder()
