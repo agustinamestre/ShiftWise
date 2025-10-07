@@ -1,6 +1,7 @@
 package com.agustinamestre.ShiftWiseBackend.services.impl;
 
-import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserRequest;
+import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserCreateRequest;
+import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserUpdateRequest;
 import com.agustinamestre.ShiftWiseBackend.controllers.responses.UserDTO;
 import com.agustinamestre.ShiftWiseBackend.domain.NombrePerfil;
 import com.agustinamestre.ShiftWiseBackend.domain.Perfil;
@@ -42,14 +43,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO crearUser(UserRequest request) {
+    public UserDTO crearUser(UserCreateRequest request) {
 
         Perfil perfilEmpleado = perfilRepository.findByNombre(NombrePerfil.EMPLEADO)
                 .orElseThrow(() -> new BusinessException(ShiftWiseErrors.PERFIL_NOT_FOUND));
 
         User user = UserMapper.mapFromUserRequest(request, perfilEmpleado);
 
-        validarDuplicidadUser(request.getEmail(), request.getNroDocumento());
+        validarDuplicidadUser(request.getEmail(), request.getNroDocumento(), null);
 
         userRepository.save(user);
 
@@ -57,12 +58,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO editarUser(String id, UserRequest request) {
+    public UserDTO editarUser(String id, UserUpdateRequest request) {
 
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ShiftWiseErrors.USER_NOT_FOUND));
 
-        validarDuplicidadUser(request.getEmail(), request.getNroDocumento());
+        validarDuplicidadUser(request.getEmail(), request.getNroDocumento(), id);
 
         UserMapper.updateEntityFromRequest(user, request);
 
@@ -106,13 +107,19 @@ public class UserServiceImpl implements UserService {
         return usuario;
     }
 
-    private void validarDuplicidadUser(String email, String nroDocumento) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new BusinessException(ShiftWiseErrors.EMAIL_EXISTENTE);
-        }
+    private void validarDuplicidadUser(String email, String nroDocumento, String idActual) {
+        userRepository.findByEmail(email).ifPresent(existingUser -> {
+            // Si el usuario encontrado no es el mismo que el que se está editando
+            if (idActual == null || !existingUser.getId().equals(idActual)) {
+                throw new BusinessException(ShiftWiseErrors.EMAIL_EXISTENTE);
+            }
+        });
 
-        if (userRepository.findByNroDocumento(nroDocumento).isPresent()) {
-            throw new BusinessException(ShiftWiseErrors.DOCUMENTO_EXISTENTE);
-        }
+        userRepository.findByNroDocumento(nroDocumento).ifPresent(existingUser -> {
+            if (idActual == null || !existingUser.getId().equals(idActual)) {
+                throw new BusinessException(ShiftWiseErrors.DOCUMENTO_EXISTENTE);
+            }
+        });
     }
+
 }

@@ -6,7 +6,6 @@ import com.agustinamestre.ShiftWiseBackend.shared.validators.email.Email;
 import com.agustinamestre.ShiftWiseBackend.shared.validators.fechaIngreso.FechaIngreso;
 import com.agustinamestre.ShiftWiseBackend.shared.validators.password.Password;
 import com.agustinamestre.ShiftWiseBackend.shared.validators.texto.TextoValido;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +16,7 @@ import java.time.LocalDate;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter @Setter
-public class UserRequest implements Serializable {
+public class UserCreateRequest implements Serializable {
 
     @Documento
     String nroDocumento;

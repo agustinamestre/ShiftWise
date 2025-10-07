@@ -1,6 +1,7 @@
 package com.agustinamestre.ShiftWiseBackend.controllers;
 
-import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserRequest;
+import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserCreateRequest;
+import com.agustinamestre.ShiftWiseBackend.controllers.requests.UserUpdateRequest;
 import com.agustinamestre.ShiftWiseBackend.controllers.responses.UserDTO;
 import com.agustinamestre.ShiftWiseBackend.services.UserService;
 import jakarta.validation.Valid;
@@ -25,7 +26,7 @@ public class UserController {
 
     @PostMapping(path="")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<UserDTO> signIn(@RequestBody @Valid UserRequest request){
+    public ResponseEntity<UserDTO> signIn(@RequestBody @Valid UserCreateRequest request){
         UserDTO userDto = userService.crearUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
@@ -44,7 +45,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO editarUser(@PathVariable String id, @Valid @RequestBody UserRequest request){
+    public UserDTO editarUser(@PathVariable String id, @Valid @RequestBody UserUpdateRequest request){
         return userService.editarUser(id, request);
     }
 
