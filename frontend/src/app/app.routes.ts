@@ -12,4 +12,5 @@ export const routes: Routes = [
   { path: AppRoutes.NEW_USER, component: UserComponent },
   { path: AppRoutes.JORNADA_LIST, component: SearchJornadaComponent },
   { path: AppRoutes.NEW_JORNADA, component: CreateJornadaComponent },
+  { path: AppRoutes.EDIT_USER, component: UserComponent },
 ];

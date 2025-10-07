@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UserResponse } from '../../interfaces/UserResponse';
 import { MaterialModule } from '../../../../material/material.module';
 import ErrorResponse from '../../../../models/ErrorResponse';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-user',
@@ -35,6 +36,9 @@ export class UserComponent implements OnInit {
   selectedFileName: string = '';
   selectedFileUrl: string | null = null;
   base64Image: string | null = null;
+
+  private router = inject(Router);
+  private authService = inject(AuthService);
 
   constructor(
     private userService: UserService,
@@ -112,7 +116,27 @@ export class UserComponent implements OnInit {
       this.userService.createUser(user).subscribe({
         next: (response) => {
           this.toastr.success('Empleado creado exitosamente!');
-          this.volver();
+          this.authService.setCurrentUser({
+            id: response.id,
+            nroDocumento: response.nroDocumento,
+            nombre: response.nombre,
+            apellido: response.apellido,
+            email: response.email,
+            fechaNacimiento: response.fechaNacimiento,
+            fechaIngreso: response.fechaIngreso,
+            fotoBase64: response.foto,
+            password: '',
+          });
+          const credentials = {
+            nroDocumento: user.nroDocumento,
+            password: user.password,
+            recordar: false,
+          };
+          this.authService.login(credentials).subscribe({
+            next: () => {
+              this.router.navigate(['/jornadas']);
+            },
+          });
         },
         error: (error: ErrorResponse) => {
           this.handleError(error);
@@ -131,7 +155,7 @@ export class UserComponent implements OnInit {
     }
   }
 
-  private getUser() {
+  getUser() {
     this.userService
       .getUserById(this.userId)
       .subscribe((userData: UserResponse) => {
@@ -144,8 +168,14 @@ export class UserComponent implements OnInit {
             email: userData.email,
             fechaNacimiento: userData.fechaNacimiento,
             fechaIngreso: userData.fechaIngreso,
+            fotoBase64: userData.foto,
             password: '',
           };
+          this.base64Image = userData.foto ?? null;
+
+          if (userData.foto) {
+            this.selectedFileUrl = `data:image/jpeg;base64,${userData.foto}`;
+          }
 
           this.fillForm(this.user!);
         }
@@ -160,9 +190,9 @@ export class UserComponent implements OnInit {
     this.form.get('fechaNacimiento')?.setValue(user.fechaNacimiento);
     this.form.get('fechaIngreso')?.setValue(user.fechaIngreso);
 
-    // if (this.isDetail) {
-    //   this.form.disable();
-    // }
+    if (this.isDetail) {
+      this.form.disable();
+    }
   }
 
   onFileSelected(event: Event): void {
@@ -178,8 +208,6 @@ export class UserComponent implements OnInit {
         const result = reader.result as string;
         this.selectedFileUrl = result;
         this.base64Image = result.split(',')[1];
-
-        console.log('Base64:', this.base64Image);
       };
       reader.readAsDataURL(file);
     }
@@ -216,5 +244,12 @@ export class UserComponent implements OnInit {
 
   volver() {
     this.location.back();
+  }
+
+  onCancel(): void {
+    this.form.reset(this.user);
+    this.selectedFileUrl = this.user?.fotoBase64
+      ? `data:image/jpeg;base64,${this.user.fotoBase64}`
+      : null;
   }
 }

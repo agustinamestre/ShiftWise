@@ -68,7 +68,7 @@
             </mat-form-field>
 
             <!-- Contraseña -->
-            <mat-form-field appearance="outline" class="full-width">
+            <mat-form-field *ngIf="isNew" appearance="outline" class="full-width">
               <mat-label>Contraseña</mat-label>
               <input matInput formControlName="password" type="password" />
               <mat-error *ngIf="form.get('password')?.hasError('required')">
@@ -86,21 +86,30 @@
                 <div class="photo-preview" *ngIf="selectedFileUrl">
                   <img [src]="selectedFileUrl" alt="Foto seleccionada" />
                 </div>
+                <!-- Si NO hay foto cargada: mostrar "Subir foto" -->
                 <button *ngIf="!selectedFileUrl" mat-stroked-button type="button" (click)="fileInput.click()">
                   <mat-icon>cloud_upload</mat-icon>
                   <span>Subir foto</span>
+                </button>
+
+                <!-- Si hay foto cargada: mostrar "Cambiar foto" -->
+                <button *ngIf="selectedFileUrl" mat-stroked-button type="button" (click)="fileInput.click()">
+                  <mat-icon>edit</mat-icon>
+                  <span>Cambiar foto</span>
                 </button>
                 <input #fileInput type="file" style="display: none" accept="image/*"
                   (change)="onFileSelected($event)" />
               </div>
             </div>
+
+
           </div>
         </div>
       </form>
 
 
-      <!-- Sección inferior: botón y texto centrados -->
-      <div class="bottom-section">
+      <!-- Sección inferior -->
+      <div class="bottom-section" *ngIf="isNew">
         <button type="submit" (click)="onSubmit()" mat-raised-button color="primary" class="login-button">
           <mat-icon>how_to_reg</mat-icon>
           <span>Registrarse</span>
@@ -111,6 +120,14 @@
           <a routerLink="/login" class="register-link">Inicia sesión</a>
         </div>
       </div>
+
+      <div class="btns" *ngIf="isEdition">
+        <button mat-button class="btn-volver" type="button" (click)="volver()">Volver</button>
+        <button mat-button class="btn-secondary" type="button" (click)="onCancel()">Cancelar</button>
+        <button mat-button class="btn-primary" [disabled]="!form.valid" type="button"
+          (click)="onSubmit()">Guardar</button>
+      </div>
+
     </mat-card-content>
   </mat-card>
 </div>
