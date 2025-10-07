@@ -196,14 +196,6 @@ mat-card-title {
   margin-right: auto;
 }
 
-.btns {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
 /* Responsive adjustments */
 @media (max-width: 600px) {
   .user-card {
