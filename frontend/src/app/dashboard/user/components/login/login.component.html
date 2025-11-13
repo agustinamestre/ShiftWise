@@ -1,87 +1,82 @@
 <div class="login-container">
-    <mat-card class="login-card">
-        <mat-card-header>
-            <mat-card-title>Iniciar Sesión</mat-card-title>
-        </mat-card-header>
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>Iniciar Sesión</mat-card-title>
+    </mat-card-header>
 
-        <mat-card-content>
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-                <!-- Número de Documento -->
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label for="documento">Número de Documento</mat-label>
-                    <input matInput formControlName="documento" type="text">
+        <!-- Número de Documento -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label for="documento">Número de Documento</mat-label>
+          <input matInput formControlName="documento" type="text">
 
-                    @if (documento?.invalid && documento?.touched) {
-                      <mat-error>
-                        @if (documento?.errors?.['required']) {
-                        El número de documento es requerido
-                        }
-                        @if (documento?.errors?.['minlength']) {
-                        El número de documento debe tener al menos 8 caracteres
-                        }
-                      </mat-error>
-                    }
-                </mat-form-field>
+          @if (documento?.invalid && documento?.touched) {
+          <mat-error>
+            @if (documento?.errors?.['required']) {
+            El número de documento es requerido
+            }
+            @if (documento?.errors?.['minlength']) {
+            El número de documento debe tener al menos 8 caracteres
+            }
+          </mat-error>
+          }
+        </mat-form-field>
 
-                <!-- Contraseña -->
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Contraseña</mat-label>
-                  <input matInput formControlName="password" [type]="hidePassword() ? 'password' : 'text'"
-                    autocomplete="current-password">
+        <!-- Contraseña -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input matInput formControlName="password" [type]="hidePassword() ? 'password' : 'text'"
+            autocomplete="current-password">
 
-                  <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()"
-                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword()">
-                    <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
-                  </button>
+          <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()"
+            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword()">
+            <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
 
-                  @if (password?.invalid && password?.touched) {
-                  <mat-error>
-                    @if (password?.errors?.['required']) {
-                    La contraseña es requerida
-                    }
-                    @if (password?.errors?.['minlength']) {
-                    La contraseña debe tener al menos 8 caracteres
-                    }
-                  </mat-error>
-                  }
-                </mat-form-field>
+          @if (password?.invalid && password?.touched) {
+          <mat-error>
+            @if (password?.errors?.['required']) {
+            La contraseña es requerida
+            }
+            @if (password?.errors?.['minlength']) {
+            La contraseña debe tener al menos 8 caracteres
+            }
+          </mat-error>
+          }
+        </mat-form-field>
 
-                <!-- Checkbox Recordarme -->
-                <div class="remember-forgot">
-                    <mat-checkbox formControlName="recordar" color="primary">
-                        Recordarme
-                    </mat-checkbox>
-                    <a routerLink="/forgot-password" class="forgot-password">
-                        ¿Olvidaste tu contraseña?
-                    </a>
-                </div>
+        <!-- Checkbox Recordarme -->
+        <div class="remember-forgot">
+          <mat-checkbox formControlName="recordar" color="primary">
+            Recordarme
+          </mat-checkbox>
+          <a href="javascript:void(0)" (click)="openForgotPasswordModal()" class="forgot-password">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
 
-                <!-- Botón de Login -->
-                <button
-                  mat-raised-button
-                  color="primary"
-                  type="submit"
-                  class="login-button"
-                  [disabled]="isLoading()">
+        <!-- Botón de Login -->
+        <button mat-raised-button color="primary" type="submit" class="login-button" [disabled]="isLoading()">
 
-                @if (isLoading()) {
-                <mat-spinner diameter="20"></mat-spinner>
-                <span>Iniciando sesión...</span>
-                } @else {
-                  <ng-container>
-                    <mat-icon>login</mat-icon>
-                    <span>Iniciar Sesión</span>
-                  </ng-container>
-                }
-              </button>
+          @if (isLoading()) {
+          <mat-spinner diameter="20"></mat-spinner>
+          <span>Iniciando sesión...</span>
+          } @else {
+          <ng-container>
+            <mat-icon>login</mat-icon>
+            <span>Iniciar Sesión</span>
+          </ng-container>
+          }
+        </button>
 
-                <!-- Texto de Registro -->
-                <div class="register-section">
-                    <span>¿No sos usuario? </span>
-                    <a [routerLink]="['/' + appRoutes.NEW_USER]" class="register-link">Registrate</a>
-                </div>
-            </form>
-        </mat-card-content>
-    </mat-card>
+        <!-- Texto de Registro -->
+        <div class="register-section">
+          <span>¿No sos usuario? </span>
+          <a [routerLink]="['/' + appRoutes.NEW_USER]" class="register-link">Registrate</a>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

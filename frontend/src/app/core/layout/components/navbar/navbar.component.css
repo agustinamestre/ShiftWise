@@ -23,6 +23,13 @@
     flex: 1 1 auto;
 }
 
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 mat-toolbar {
     position: fixed;
     top: 0;
