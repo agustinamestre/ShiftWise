@@ -1,13 +1,25 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 
 import { Router, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../interfaces/LoginRequest';
 import { ToastrService } from 'ngx-toastr';
 import { MaterialModule } from '../../../../material/material.module';
 import AppRoutes from '../../../../common/routes';
 import ErrorResponse from '../../../../models/ErrorResponse';
+import { MatDialog } from '@angular/material/dialog';
+import { ForgotPasswordModalComponent } from '../forgot-password-modal/forgot-password-modal.component';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +34,7 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private toastr = inject(ToastrService);
+  private dialog = inject(MatDialog);
 
   appRoutes = AppRoutes;
 
@@ -44,13 +57,11 @@ export class LoginComponent {
         recordar: this.loginForm.get('recordar')?.value,
       };
 
-      console.log(credentials);
-
       this.authService.login(credentials).subscribe({
         next: () => {
           this.toastr.success('¡Inicio de sesión exitoso!');
           this.isLoading.set(false);
-          this.router.navigate(['/']);
+          this.router.navigate(['/jornadas']);
         },
         error: (error: ErrorResponse) => {
           this.isLoading.set(false);
@@ -58,6 +69,13 @@ export class LoginComponent {
         },
       });
     }
+  }
+
+  openForgotPasswordModal() {
+    this.dialog.open(ForgotPasswordModalComponent, {
+      width: '400px',
+      disableClose: false,
+    });
   }
 
   handleError(error: ErrorResponse) {

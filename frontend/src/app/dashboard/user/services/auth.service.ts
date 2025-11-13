@@ -29,7 +29,12 @@ export class AuthService {
     if (this.hasToken()) {
       this.loadCurrentUser();
     }
+  }
 
+  setCurrentUser(user: User): void {
+    console.log('Seteando currentUser:', user);
+    this.currentUserSubject.next(user);
+    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
   }
 
   login(credentials: LoginRequest): Observable<any> {
@@ -119,5 +124,23 @@ export class AuthService {
     } else {
       sessionStorage.setItem(this.TOKEN_KEY, token); // Temporal
     }
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    const url = `${environment.api}${this.endpoint}${'/forgot-password'}`;
+
+    return this.http.post(url, { email }, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    const url = `${environment.api}${this.endpoint}${'/reset-password'}`;
+
+    return this.http.post(url, {
+      token,
+      newPassword,
+    });
   }
 }

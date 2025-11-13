@@ -1,8 +1,24 @@
 <mat-toolbar>
   <mat-toolbar-row>
     <span class="title" routerLink="/">
-      <span class="title">ShiftWise</span>
+      <span class="title-text">ShiftWise</span>
     </span>
     <span class="spacer"></span>
+    <ng-container *ngIf="currentUser | async as currentUser">
+      <button mat-icon-button class="profile-button" [matMenuTriggerFor]="userMenu" aria-label="Perfil del usuario">
+        <img class="profile-pic"
+          [src]="currentUser.fotoBase64 ? 'data:image/jpeg;base64,' + currentUser.fotoBase64 : ''"
+          alt="Foto de perfil del usuario" />
+
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item [routerLink]="['/user', currentUser.id, 'edit']">
+          Editar Perfil
+        </button>
+        <button mat-menu-item (click)="logout()">
+          Cerrar Sesión
+        </button>
+      </mat-menu>
+    </ng-container>
   </mat-toolbar-row>
 </mat-toolbar>
